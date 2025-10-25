@@ -1,5 +1,9 @@
 import "./tile.scss";
 
-export const Tile = () => {
-  return <div className="tile">H</div>;
+interface TileProps {
+  letter?: string;
+}
+
+export const Tile = ({ letter }: TileProps) => {
+  return <div className="tile">{letter}</div>;
 };
