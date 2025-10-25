@@ -18,6 +18,7 @@ export const Game = () => {
     null,
   ]);
   const [currentGuessIndex, setCurrentGuessIndex] = useState(0);
+  const [hasWonGame, setHasWonGame] = useState(false);
 
   useEffect(() => {
     const keyUpEvent = ({ key }: KeyboardEvent) => {
@@ -30,12 +31,17 @@ export const Game = () => {
         return;
       }
 
-      // TODO: Add enter logic to check if the word is correct
-
       if (key === "Backspace" && currentGuess) {
         newGuesses[currentGuessIndex] = currentGuess?.slice(0, -1);
         setGuesses(newGuesses);
 
+        return;
+      }
+
+      // TODO: When pressing enter, check if the guess is valid
+      // TODO: If it's invalid, increment currentGuessIndex by 1
+      // TODO: if it's valid, set hasWonGame to true
+      if (key === "Enter") {
         return;
       }
 
