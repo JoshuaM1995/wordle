@@ -72,23 +72,23 @@ export const Game = ({ correctWord }: GameProps) => {
         <div className="tile-row">
           {Array.from({ length: TILES_PER_ROW }).map((__, j) => {
             const guessForTile = guesses[i]?.[j] ?? "";
+            const correctWordLetters = correctWord.split("");
 
             // Don't show the colors for tiles without any guesses yet
             if (guessForTile === "") {
               return <Tile letter={guessForTile} />;
             }
 
+            console.log("Tile", {
+              guessForTile,
+              correctWordLetters,
+              guessIndex: j,
+            });
+
             const isLetterIncorrect = !correctWord.includes(guessForTile);
             const isLetterInCorrectPosition =
               correctWord.includes(guessForTile);
-            const isLetterCorrect = false;
-
-            console.log("Tile", {
-              guessForTile,
-              isLetterCorrect,
-              isLetterInCorrectPosition,
-              isLetterIncorrect,
-            });
+            const isLetterCorrect = correctWordLetters[j] === guessForTile;
 
             return (
               <Tile
