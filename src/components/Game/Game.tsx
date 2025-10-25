@@ -32,11 +32,7 @@ export const Game = () => {
         return;
       }
 
-      if (key === "Enter") {
-        if (currentGuess?.length !== 5) {
-          return;
-        }
-
+      if (key === "Enter" && currentGuess?.length === TILES_PER_ROW) {
         if (currentGuess === word) {
           setHasWonGame(true);
           return;
