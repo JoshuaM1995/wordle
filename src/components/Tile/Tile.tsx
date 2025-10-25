@@ -23,5 +23,9 @@ export const Tile = ({
     className += " incorrect";
   }
 
+  if (letter) {
+    className += " has-letter";
+  }
+
   return <div className={className}>{letter}</div>;
 };

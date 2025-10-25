@@ -17,6 +17,10 @@
     color: #fff;
   }
 
+  &.has-letter {
+    border-color: $tile-border-color-filled;
+  }
+
   &.correct {
     background: $correct;
     border: 2px solid $correct;
