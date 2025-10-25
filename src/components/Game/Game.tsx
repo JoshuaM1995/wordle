@@ -22,7 +22,6 @@ export const Game = ({ correctWord }: GameProps) => {
     const keyUpEvent = ({ key }: KeyboardEvent) => {
       // The user has used up all their guesses
       if (currentGuessIndex === ROWS_PER_GAME) {
-        // TODO: Handle this
         return;
       }
 
@@ -51,6 +50,16 @@ export const Game = ({ correctWord }: GameProps) => {
 
         if (!validWords.includes(currentGuess)) {
           toast("Invalid word!");
+          return;
+        }
+
+        if (
+          currentGuess &&
+          // The guess has already been added to the array before pressing enter, so if we check length === 0
+          // Then it will always be true and the user can never guess
+          guesses.filter((guess) => guess === currentGuess).length > 1
+        ) {
+          toast("You already guessed this word!");
           return;
         }
 
