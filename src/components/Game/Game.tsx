@@ -33,6 +33,10 @@ export const Game = () => {
       }
 
       if (key === "Enter") {
+        if (currentGuess?.length !== 5) {
+          return;
+        }
+
         if (currentGuess === word) {
           setHasWonGame(true);
           return;
