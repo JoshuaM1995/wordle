@@ -88,6 +88,9 @@ export const Game = ({ correctWord }: GameProps) => {
 
   return (
     <div id="game">
+      <h1 className="title">Wordle Clone</h1>
+      <h4 className="subtitle">Refresh the page to get a new word.</h4>
+
       {hasWonGame && "You won!!!!"}
       {Array.from({ length: ROWS_PER_GAME }).map((_, i) => (
         <div className="tile-row">

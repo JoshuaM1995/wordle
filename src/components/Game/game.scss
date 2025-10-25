@@ -5,6 +5,15 @@
   justify-content: center;
   height: 100vh;
   gap: 5px;
+
+  .title {
+    margin-bottom: 0;
+  }
+
+  .subtitle {
+    margin-top: 0;
+    color: #333;
+  }
 }
 
 .tile-row {
