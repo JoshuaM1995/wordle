@@ -74,16 +74,13 @@ export const Game = ({ correctWord }: GameProps) => {
             const guessForTile = guesses[i]?.[j] ?? "";
             const correctWordLetters = correctWord.split("");
 
-            // Don't show the colors for tiles without any guesses yet
-            if (guessForTile === "") {
+            // Don't show the colors for tiles without any guesses yet or if a guess hasn't been submitted
+            if (
+              guessForTile === "" ||
+              (i === currentGuessIndex && !hasWonGame)
+            ) {
               return <Tile letter={guessForTile} />;
             }
-
-            console.log("Tile", {
-              guessForTile,
-              correctWordLetters,
-              guessIndex: j,
-            });
 
             const isLetterIncorrect = !correctWord.includes(guessForTile);
             const isLetterInCorrectPosition =
