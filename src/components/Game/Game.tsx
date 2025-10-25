@@ -133,7 +133,9 @@ export const Game = ({ correctWord }: GameProps) => {
       ))}
 
       {currentGuessIndex === ROWS_PER_GAME && !hasWonGame && (
-        <div>Correct Answer: {correctWord?.toUpperCase()}</div>
+        <div id="correct-answer">
+          Correct Answer: {correctWord?.toUpperCase()}
+        </div>
       )}
     </div>
   );

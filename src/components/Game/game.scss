@@ -14,9 +14,17 @@
     margin-top: 0;
     color: #333;
   }
-}
 
-.tile-row {
-  display: flex;
-  gap: 5px;
+  .tile-row {
+    display: flex;
+    gap: 5px;
+  }
+
+  #correct-answer {
+    color: #fff;
+    background: #000;
+    border-radius: 10px;
+    margin-top: 10px;
+    padding: 12px 14px;
+  }
 }
