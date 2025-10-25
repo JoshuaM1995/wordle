@@ -19,13 +19,16 @@
 
   &.correct {
     background: $correct;
+    border: 2px solid $correct;
   }
 
   &.correct-position {
     background: $correct-position;
+    border: 2px solid $correct-position;
   }
 
   &.incorrect {
     background: $incorrect;
+    border: 2px solid $incorrect;
   }
 }
