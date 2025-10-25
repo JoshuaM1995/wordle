@@ -20,8 +20,8 @@ export const Game = ({ correctWord }: GameProps) => {
 
   useEffect(() => {
     const keyUpEvent = ({ key }: KeyboardEvent) => {
-      // The user has used up all their guesses
-      if (currentGuessIndex === ROWS_PER_GAME) {
+      // The user has used up all their guesses or they won the game, so no point in applying the game logic
+      if (currentGuessIndex === ROWS_PER_GAME || hasWonGame) {
         return;
       }
 
@@ -65,6 +65,12 @@ export const Game = ({ correctWord }: GameProps) => {
 
         if (currentGuess === correctWord) {
           setHasWonGame(true);
+          toast("You guessed the correct word!", {
+            style: {
+              color: "white",
+              backgroundColor: "green",
+            },
+          });
           return;
         }
 
@@ -93,50 +99,51 @@ export const Game = ({ correctWord }: GameProps) => {
     return () => {
       window.removeEventListener("keyup", keyUpEvent);
     };
-  }, [guesses, currentGuessIndex]);
+  }, [guesses, currentGuessIndex, hasWonGame]);
 
   return (
-    <div id="game">
-      <h1 className="title">Wordle Clone</h1>
-      <h4 className="subtitle">Refresh the page to get a new word.</h4>
+    <>
+      <div id="game">
+        <h1 className="title">Wordle Practice</h1>
+        <h4 className="subtitle">Refresh the page to get a new word.</h4>
 
-      {hasWonGame && "You won!!!!"}
-      {Array.from({ length: ROWS_PER_GAME }).map((_, i) => (
-        <div className="tile-row">
-          {Array.from({ length: TILES_PER_ROW }).map((__, j) => {
-            const guessForTile = guesses[i]?.[j] ?? "";
-            const correctWordLetters = correctWord.split("");
+        {Array.from({ length: ROWS_PER_GAME }).map((_, i) => (
+          <div className="tile-row">
+            {Array.from({ length: TILES_PER_ROW }).map((__, j) => {
+              const guessForTile = guesses[i]?.[j] ?? "";
+              const correctWordLetters = correctWord.split("");
 
-            // Don't show the colors for tiles without any guesses yet or if a guess hasn't been submitted
-            if (
-              guessForTile === "" ||
-              (i === currentGuessIndex && !hasWonGame)
-            ) {
-              return <Tile letter={guessForTile} />;
-            }
+              // Don't show the colors for tiles without any guesses yet or if a guess hasn't been submitted
+              if (
+                guessForTile === "" ||
+                (i === currentGuessIndex && !hasWonGame)
+              ) {
+                return <Tile letter={guessForTile} />;
+              }
 
-            const isLetterIncorrect = !correctWord.includes(guessForTile);
-            const isLetterInCorrectPosition =
-              correctWord.includes(guessForTile);
-            const isLetterCorrect = correctWordLetters[j] === guessForTile;
+              const isLetterIncorrect = !correctWord.includes(guessForTile);
+              const isLetterInCorrectPosition =
+                correctWord.includes(guessForTile);
+              const isLetterCorrect = correctWordLetters[j] === guessForTile;
 
-            return (
-              <Tile
-                letter={guessForTile}
-                isLetterCorrect={isLetterCorrect}
-                isLetterInCorrectPosition={isLetterInCorrectPosition}
-                isLetterIncorrect={isLetterIncorrect}
-              />
-            );
-          })}
-        </div>
-      ))}
+              return (
+                <Tile
+                  letter={guessForTile}
+                  isLetterCorrect={isLetterCorrect}
+                  isLetterInCorrectPosition={isLetterInCorrectPosition}
+                  isLetterIncorrect={isLetterIncorrect}
+                />
+              );
+            })}
+          </div>
+        ))}
 
-      {currentGuessIndex === ROWS_PER_GAME && !hasWonGame && (
+        {/* {currentGuessIndex === ROWS_PER_GAME && !hasWonGame && ( */}
         <div id="correct-answer">
           Correct Answer: {correctWord?.toUpperCase()}
         </div>
-      )}
-    </div>
+        {/* )} */}
+      </div>
+    </>
   );
 };
