@@ -1,22 +1,20 @@
 import { useEffect, useState } from "react";
 import { Tile } from "../Tile";
 import "./game.scss";
-import words from "../../data/words.json";
 
 const ROWS_PER_GAME = 6;
 const TILES_PER_ROW = 5;
 // Initialize the state with null values so we can check if a guess was made for the row yet
 const emptyGuesses = Array.from({ length: ROWS_PER_GAME }).map(() => null);
 
-export const Game = () => {
+interface GameProps {
+  correctWord: string;
+}
+
+export const Game = ({ correctWord }: GameProps) => {
   const [guesses, setGuesses] = useState<(string | null)[]>(emptyGuesses);
   const [currentGuessIndex, setCurrentGuessIndex] = useState(0);
   const [hasWonGame, setHasWonGame] = useState(false);
-  const [word, setWord] = useState<string>();
-
-  useEffect(() => {
-    setWord(words[Math.floor(Math.random() * words.length)]);
-  }, []);
 
   useEffect(() => {
     const keyUpEvent = ({ key }: KeyboardEvent) => {
@@ -32,8 +30,10 @@ export const Game = () => {
         return;
       }
 
+      // TODO: Add logic to ensure entered word is a valid english 5 letter word
+      // NOTE: A valid word may not necessarily be in the wordle words list, as they're curated
       if (key === "Enter" && currentGuess?.length === TILES_PER_ROW) {
-        if (currentGuess === word) {
+        if (currentGuess === correctWord) {
           setHasWonGame(true);
           return;
         }
@@ -71,13 +71,37 @@ export const Game = () => {
       {Array.from({ length: ROWS_PER_GAME }).map((_, i) => (
         <div className="tile-row">
           {Array.from({ length: TILES_PER_ROW }).map((__, j) => {
-            const guessForTile = guesses[i]?.[j];
+            const guessForTile = guesses[i]?.[j] ?? "";
 
-            return <Tile letter={guessForTile ?? undefined} />;
+            // Don't show the colors for tiles without any guesses yet
+            if (guessForTile === "") {
+              return <Tile letter={guessForTile} />;
+            }
+
+            const isLetterIncorrect = !correctWord.includes(guessForTile);
+            const isLetterInCorrectPosition =
+              correctWord.includes(guessForTile);
+            const isLetterCorrect = false;
+
+            console.log("Tile", {
+              guessForTile,
+              isLetterCorrect,
+              isLetterInCorrectPosition,
+              isLetterIncorrect,
+            });
+
+            return (
+              <Tile
+                letter={guessForTile}
+                isLetterCorrect={isLetterCorrect}
+                isLetterInCorrectPosition={isLetterInCorrectPosition}
+                isLetterIncorrect={isLetterIncorrect}
+              />
+            );
           })}
         </div>
       ))}
-      Answer: {word?.toUpperCase()}
+      Answer: {correctWord?.toUpperCase()}
     </div>
   );
 };

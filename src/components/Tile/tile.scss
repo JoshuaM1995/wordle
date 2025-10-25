@@ -10,4 +10,16 @@
   font-size: 32px;
   font-weight: bold;
   text-transform: uppercase;
+
+  &.correct {
+    background: $correct;
+  }
+
+  &.correct-position {
+    background: $correct-position;
+  }
+
+  &.incorrect {
+    background: $incorrect;
+  }
 }
