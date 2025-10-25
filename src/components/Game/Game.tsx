@@ -21,15 +21,32 @@ export const Game = () => {
 
   useEffect(() => {
     const keyUpEvent = ({ key }: KeyboardEvent) => {
-      // TODO: Add validation to ensure key is valid
-      // TODO: Add backspace logic
-
       const currentGuess = guesses[currentGuessIndex];
-      const newGuess = `${currentGuess}${key}`;
       const newGuesses = [...guesses];
+      const validKeyRegex = /^[a-z]{1}$/;
+      const validKeyMatches = key.match(validKeyRegex);
+
+      if ((validKeyMatches?.length ?? 0) === 0) {
+        return;
+      }
+
+      // TODO: Add enter logic to check if the word is correct
+
+      if (key === "Backspace" && currentGuess) {
+        newGuesses[currentGuessIndex] = currentGuess?.slice(0, -1);
+        setGuesses(newGuesses);
+
+        return;
+      }
+
+      const newGuess = `${currentGuess}${key}`;
+
+      // Don't allow guesses longer than x characters
+      if (newGuess.length > TILES_PER_ROW) {
+        return;
+      }
 
       newGuesses[currentGuessIndex] = newGuess;
-
       setGuesses(newGuesses);
     };
 
