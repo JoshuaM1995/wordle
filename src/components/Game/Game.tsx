@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
+import validWords from "../../data/valid-words.json";
 import { Tile } from "../Tile";
 import "./game.scss";
-import validWords from "../../data/valid-words.json";
+import { toast } from "react-hot-toast";
 
 const ROWS_PER_GAME = 6;
 const TILES_PER_ROW = 5;
@@ -15,7 +16,6 @@ interface GameProps {
 export const Game = ({ correctWord }: GameProps) => {
   const [guesses, setGuesses] = useState<(string | null)[]>(emptyGuesses);
   const [currentGuessIndex, setCurrentGuessIndex] = useState(0);
-  const [error, setError] = useState<string>();
   const [hasWonGame, setHasWonGame] = useState(false);
 
   useEffect(() => {
@@ -40,23 +40,22 @@ export const Game = ({ correctWord }: GameProps) => {
 
       if (key === "Enter") {
         if (!currentGuess) {
-          setError("Please add some letters!");
+          toast("Please add some letters!");
           return;
         }
 
         if ((currentGuess?.length ?? 0) < TILES_PER_ROW) {
-          setError("Too short!");
+          toast("Too short!");
           return;
         }
 
         if (!validWords.includes(currentGuess)) {
-          setError("Invalid word!");
+          toast("Invalid word!");
           return;
         }
 
         if (currentGuess === correctWord) {
           setHasWonGame(true);
-          setError(undefined);
           return;
         }
 
@@ -124,8 +123,6 @@ export const Game = ({ correctWord }: GameProps) => {
       {currentGuessIndex === ROWS_PER_GAME && !hasWonGame && (
         <div>Correct Answer: {correctWord?.toUpperCase()}</div>
       )}
-
-      {error && <div>Error: {error}</div>}
     </div>
   );
 };
