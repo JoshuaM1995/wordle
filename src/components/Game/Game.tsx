@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Tile } from "../Tile";
 import "./game.scss";
+import words from "../../data/words.json";
 
 const ROWS_PER_GAME = 6;
 const TILES_PER_ROW = 5;
@@ -8,28 +9,21 @@ const TILES_PER_ROW = 5;
 const emptyGuesses = Array.from({ length: ROWS_PER_GAME }).map(() => null);
 
 export const Game = () => {
-  // const [guesses, setGuesses] = useState<(string | null)[]>(emptyGuesses);
-  const [guesses, setGuesses] = useState<(string | null)[]>([
-    "Hel",
-    null,
-    null,
-    null,
-    null,
-    null,
-  ]);
+  const [guesses, setGuesses] = useState<(string | null)[]>(emptyGuesses);
   const [currentGuessIndex, setCurrentGuessIndex] = useState(0);
   const [hasWonGame, setHasWonGame] = useState(false);
+  const [word, setWord] = useState<string>();
+
+  useEffect(() => {
+    setWord(words[Math.floor(Math.random() * words.length)]);
+  }, []);
 
   useEffect(() => {
     const keyUpEvent = ({ key }: KeyboardEvent) => {
-      const currentGuess = guesses[currentGuessIndex];
+      const currentGuess = guesses[currentGuessIndex]?.toLowerCase();
       const newGuesses = [...guesses];
-      const validKeyRegex = /^[a-z]{1}$/;
+      const validKeyRegex = /^[a-zA-Z]{1}$/;
       const validKeyMatches = key.match(validKeyRegex);
-
-      if ((validKeyMatches?.length ?? 0) === 0) {
-        return;
-      }
 
       if (key === "Backspace" && currentGuess) {
         newGuesses[currentGuessIndex] = currentGuess?.slice(0, -1);
@@ -38,14 +32,22 @@ export const Game = () => {
         return;
       }
 
-      // TODO: When pressing enter, check if the guess is valid
-      // TODO: If it's invalid, increment currentGuessIndex by 1
-      // TODO: if it's valid, set hasWonGame to true
       if (key === "Enter") {
+        if (currentGuess === word) {
+          setHasWonGame(true);
+          return;
+        }
+
+        // The answer is incorrect, so go to the next row
+        setCurrentGuessIndex((prevIndex) => prevIndex + 1);
         return;
       }
 
-      const newGuess = `${currentGuess}${key}`;
+      if ((validKeyMatches?.length ?? 0) === 0) {
+        return;
+      }
+
+      const newGuess = `${currentGuess ?? ""}${key}`;
 
       // Don't allow guesses longer than x characters
       if (newGuess.length > TILES_PER_ROW) {
@@ -63,10 +65,9 @@ export const Game = () => {
     };
   }, [guesses, currentGuessIndex]);
 
-  console.log("guesses", { guesses });
-
   return (
     <div id="game">
+      {hasWonGame && "You won!!!!"}
       {Array.from({ length: ROWS_PER_GAME }).map((_, i) => (
         <div className="tile-row">
           {Array.from({ length: TILES_PER_ROW }).map((__, j) => {
@@ -76,6 +77,7 @@ export const Game = () => {
           })}
         </div>
       ))}
+      Answer: {word?.toUpperCase()}
     </div>
   );
 };
