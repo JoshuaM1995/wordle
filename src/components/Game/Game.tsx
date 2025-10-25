@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Tile } from "../Tile";
 import "./game.scss";
+import validWords from "../../data/valid-words.json";
 
 const ROWS_PER_GAME = 6;
 const TILES_PER_ROW = 5;
@@ -14,6 +15,7 @@ interface GameProps {
 export const Game = ({ correctWord }: GameProps) => {
   const [guesses, setGuesses] = useState<(string | null)[]>(emptyGuesses);
   const [currentGuessIndex, setCurrentGuessIndex] = useState(0);
+  const [error, setError] = useState<string>();
   const [hasWonGame, setHasWonGame] = useState(false);
 
   useEffect(() => {
@@ -30,11 +32,25 @@ export const Game = ({ correctWord }: GameProps) => {
         return;
       }
 
-      // TODO: Add logic to ensure entered word is a valid english 5 letter word
-      // NOTE: A valid word may not necessarily be in the wordle words list, as they're curated
-      if (key === "Enter" && currentGuess?.length === TILES_PER_ROW) {
+      if (key === "Enter") {
+        if (!currentGuess) {
+          setError("Please add some letters!");
+          return;
+        }
+
+        if ((currentGuess?.length ?? 0) < TILES_PER_ROW) {
+          setError("Too short!");
+          return;
+        }
+
+        if (!validWords.includes(currentGuess)) {
+          setError("Invalid word!");
+          return;
+        }
+
         if (currentGuess === correctWord) {
           setHasWonGame(true);
+          setError(undefined);
           return;
         }
 
@@ -98,7 +114,9 @@ export const Game = ({ correctWord }: GameProps) => {
           })}
         </div>
       ))}
-      Answer: {correctWord?.toUpperCase()}
+
+      <div>Answer: {correctWord?.toUpperCase()}</div>
+      {error && <div>Error: {error}</div>}
     </div>
   );
 };
