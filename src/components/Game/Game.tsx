@@ -20,6 +20,12 @@ export const Game = ({ correctWord }: GameProps) => {
 
   useEffect(() => {
     const keyUpEvent = ({ key }: KeyboardEvent) => {
+      // The user has used up all their guesses
+      if (currentGuessIndex === ROWS_PER_GAME) {
+        // TODO: Handle this
+        return;
+      }
+
       const currentGuess = guesses[currentGuessIndex]?.toLowerCase();
       const newGuesses = [...guesses];
       const validKeyRegex = /^[a-zA-Z]{1}$/;
@@ -115,7 +121,10 @@ export const Game = ({ correctWord }: GameProps) => {
         </div>
       ))}
 
-      <div>Answer: {correctWord?.toUpperCase()}</div>
+      {currentGuessIndex === ROWS_PER_GAME && !hasWonGame && (
+        <div>Correct Answer: {correctWord?.toUpperCase()}</div>
+      )}
+
       {error && <div>Error: {error}</div>}
     </div>
   );
