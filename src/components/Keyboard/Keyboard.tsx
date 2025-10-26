@@ -1,3 +1,4 @@
+import type { HandleKeyPressOptions } from "../../hooks/useGameState";
 import "./keyboard.scss";
 
 const firstRowKeys = ["q", "w", "e", "r", "t", "y", "u", "i", "o", "p"];
@@ -9,6 +10,7 @@ interface KeyboardProps {
   currentGuessIndex: number;
   guesses: (string | null)[];
   hasWonGame: boolean;
+  handleKeyPress: (options: HandleKeyPressOptions) => void;
 }
 
 export const Keyboard = ({
@@ -16,6 +18,7 @@ export const Keyboard = ({
   correctWord,
   currentGuessIndex,
   hasWonGame,
+  handleKeyPress,
 }: KeyboardProps) => {
   const getKeyClassName = (key: string) => {
     const correctWordLetters = correctWord.split("");
@@ -70,14 +73,28 @@ export const Keyboard = ({
   return (
     <div id="keyboard">
       <div className="keyboard-row">
-        {firstRowKeys.map((key) => {
-          return <div className={getKeyClassName(key)}>{key}</div>;
-        })}
+        {firstRowKeys.map((key) => (
+          <div
+            className={getKeyClassName(key)}
+            onClick={() => {
+              handleKeyPress({ key, metaKey: false, ctrlKey: false });
+            }}
+          >
+            {key}
+          </div>
+        ))}
       </div>
 
       <div className="keyboard-row">
         {secondRowKeys.map((key) => (
-          <div className={getKeyClassName(key)}>{key}</div>
+          <div
+            className={getKeyClassName(key)}
+            onClick={() => {
+              handleKeyPress({ key, metaKey: false, ctrlKey: false });
+            }}
+          >
+            {key}
+          </div>
         ))}
       </div>
 
@@ -85,7 +102,16 @@ export const Keyboard = ({
         {thirdRowKeys.map((key) => {
           if (key === "backspace") {
             return (
-              <div className="key backspace">
+              <div
+                className="key backspace"
+                onClick={() => {
+                  handleKeyPress({
+                    key: "Backspace",
+                    metaKey: false,
+                    ctrlKey: false,
+                  });
+                }}
+              >
                 <svg
                   aria-hidden="true"
                   xmlns="http://www.w3.org/2000/svg"
@@ -104,10 +130,32 @@ export const Keyboard = ({
           }
 
           if (key === "enter") {
-            return <div className="key enter">{key}</div>;
+            return (
+              <div
+                className="key enter"
+                onClick={() => {
+                  handleKeyPress({
+                    key: "Enter",
+                    metaKey: false,
+                    ctrlKey: false,
+                  });
+                }}
+              >
+                {key}
+              </div>
+            );
           }
 
-          return <div className={getKeyClassName(key)}>{key}</div>;
+          return (
+            <div
+              className={getKeyClassName(key)}
+              onClick={() => {
+                handleKeyPress({ key, metaKey: false, ctrlKey: false });
+              }}
+            >
+              {key}
+            </div>
+          );
         })}
       </div>
     </div>
