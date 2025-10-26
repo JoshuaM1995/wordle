@@ -1,5 +1,4 @@
 import { useLocalStorage } from "@uidotdev/usehooks";
-import { useEffect } from "react";
 import { toast } from "react-hot-toast";
 import { LOCAL_STORAGE_KEYS, ROWS_PER_GAME, TILES_PER_ROW } from "../constants";
 import validWords from "../data/valid-words.json";
@@ -106,14 +105,6 @@ export const useGameState = (correctWord: string) => {
     newGuesses[currentGuessIndex] = newGuess;
     setGuesses(newGuesses);
   };
-
-  useEffect(() => {
-    window.addEventListener("keyup", (event) => handleKeyPress(event));
-
-    return () => {
-      window.removeEventListener("keyup", (event) => handleKeyPress(event));
-    };
-  }, [guesses, currentGuessIndex, hasWonGame]);
 
   return {
     guesses,

@@ -1,3 +1,4 @@
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { HandleKeyPressOptions } from "../../hooks/useGameState";
 import "./keyboard.scss";
 
@@ -13,6 +14,20 @@ interface KeyboardProps {
   handleKeyPress: (options: HandleKeyPressOptions) => void;
 }
 
+const mapPhysicalKeyToVisual = (physicalKey: string) => {
+  const key = physicalKey.toLowerCase();
+
+  if (key === "enter") {
+    return "enter";
+  }
+
+  if (key === "backspace") {
+    return "backspace";
+  }
+
+  return key;
+};
+
 export const Keyboard = ({
   guesses,
   correctWord,
@@ -20,61 +35,120 @@ export const Keyboard = ({
   hasWonGame,
   handleKeyPress,
 }: KeyboardProps) => {
-  const getKeyClassName = (key: string) => {
+  const [pressedKey, setPressedKey] = useState<string | null>(null);
+  const handleKeyPressRef = useRef(handleKeyPress);
+
+  // Keep the ref up to date
+  useEffect(() => {
+    handleKeyPressRef.current = handleKeyPress;
+  }, [handleKeyPress]);
+
+  useEffect(() => {
+    const handleKeyUp = (event: KeyboardEvent) => {
+      const visualKey = mapPhysicalKeyToVisual(event.key);
+      setPressedKey(visualKey);
+
+      // Clear the pressed key after animation
+      setTimeout(() => {
+        setPressedKey(null);
+      }, 150);
+
+      handleKeyPressRef.current(event);
+    };
+
+    window.addEventListener("keyup", handleKeyUp);
+
+    return () => {
+      window.removeEventListener("keyup", handleKeyUp);
+    };
+  }, []);
+
+  // Memoize expensive calculations
+  const keyStates = useMemo(() => {
     const correctWordLetters = correctWord.split("");
-    // When the user has won the game, we include the current guess because it's the
-    // answer to the wordle, so it should highlight those letters on the keyboard
     const filteredGuesses = hasWonGame
       ? guesses
-      : guesses
-          // Exclude the current guess, because we don't want to give away the
-          // letters until the user submits
-          .filter((_, i) => i !== currentGuessIndex);
+      : guesses.filter((_, i) => i !== currentGuessIndex);
+
     const allGuessLetters = filteredGuesses
-      // The array is initialized with null guesses, so filter them out
       .filter((guess) => !!guess)
       .map((guess) => guess?.split(""));
-    const hasBeenGuessed =
-      (filteredGuesses?.find((guess) => guess?.includes(key))?.length ?? 0) > 0;
-    const isKeyInCorrectPosition = correctWord.includes(key);
-    const isKeyIncorrectGuess = !correctWord.includes(key);
 
-    let isKeyCorrect = false;
-
-    allGuessLetters.forEach((guess) => {
-      if (guess?.includes(key)) {
-        // If any of the guesses have any of the letters in the correct position,
-        // then the key should have the correct styling
-        guess?.forEach((guessLetter, j) => {
-          if (guessLetter === correctWordLetters[j] && guessLetter === key) {
-            isKeyCorrect = true;
-          }
-        });
+    const states: Record<
+      string,
+      {
+        hasBeenGuessed: boolean;
+        isKeyCorrect: boolean;
+        isKeyInCorrectPosition: boolean;
+        isKeyIncorrectGuess: boolean;
       }
+    > = {};
+
+    [...firstRowKeys, ...secondRowKeys, ...thirdRowKeys].forEach((key) => {
+      const hasBeenGuessed =
+        (filteredGuesses?.find((guess) => guess?.includes(key))?.length ?? 0) >
+        0;
+      const isKeyInCorrectPosition = correctWord.includes(key);
+      const isKeyIncorrectGuess = !correctWord.includes(key);
+
+      let isKeyCorrect = false;
+      allGuessLetters.forEach((guess) => {
+        if (guess?.includes(key)) {
+          guess?.forEach((guessLetter, j) => {
+            if (guessLetter === correctWordLetters[j] && guessLetter === key) {
+              isKeyCorrect = true;
+            }
+          });
+        }
+      });
+
+      states[key] = {
+        hasBeenGuessed,
+        isKeyCorrect,
+        isKeyInCorrectPosition,
+        isKeyIncorrectGuess,
+      };
     });
 
-    let className = "key";
+    return states;
+  }, [correctWord, guesses, hasWonGame, currentGuessIndex]);
 
-    if (!hasBeenGuessed) {
+  const getKeyClassName = useCallback(
+    (key: string) => {
+      const state = keyStates[key];
+      if (!state) return "key";
+
+      let className = "key";
+
+      // Add pressed key animation class first
+      if (pressedKey === key.toLowerCase()) {
+        className += " key-pressed";
+      }
+
+      // Add color classes
+      if (!state.hasBeenGuessed) {
+        return className;
+      }
+
+      if (state.isKeyCorrect) {
+        className += " correct";
+      } else if (state.isKeyInCorrectPosition) {
+        className += " correct-position";
+      } else if (state.isKeyIncorrectGuess) {
+        className += " incorrect";
+      }
+
       return className;
-    }
-
-    if (isKeyCorrect) {
-      className += " correct";
-    } else if (isKeyInCorrectPosition) {
-      className += " correct-position";
-    } else if (isKeyIncorrectGuess) {
-      className += " incorrect";
-    }
-
-    return className;
-  };
+    },
+    [keyStates, pressedKey]
+  );
 
   return (
     <div id="keyboard">
       <div className="keyboard-row">
         {firstRowKeys.map((key) => (
           <div
+            key={key}
             className={getKeyClassName(key)}
             onClick={() => {
               handleKeyPress({ key, metaKey: false, ctrlKey: false });
@@ -88,6 +162,7 @@ export const Keyboard = ({
       <div className="keyboard-row">
         {secondRowKeys.map((key) => (
           <div
+            key={key}
             className={getKeyClassName(key)}
             onClick={() => {
               handleKeyPress({ key, metaKey: false, ctrlKey: false });
@@ -103,7 +178,8 @@ export const Keyboard = ({
           if (key === "backspace") {
             return (
               <div
-                className="key backspace"
+                key={key}
+                className={`${getKeyClassName(key)} backspace`}
                 onClick={() => {
                   handleKeyPress({
                     key: "Backspace",
@@ -132,7 +208,8 @@ export const Keyboard = ({
           if (key === "enter") {
             return (
               <div
-                className="key enter"
+                key={key}
+                className={`${getKeyClassName(key)} enter`}
                 onClick={() => {
                   handleKeyPress({
                     key: "Enter",
@@ -148,6 +225,7 @@ export const Keyboard = ({
 
           return (
             <div
+              key={key}
               className={getKeyClassName(key)}
               onClick={() => {
                 handleKeyPress({ key, metaKey: false, ctrlKey: false });
