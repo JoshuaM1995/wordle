@@ -51,7 +51,7 @@ export const Keyboard = ({
       // Clear the pressed key after animation
       setTimeout(() => {
         setPressedKey(null);
-      }, 150);
+      }, 80);
 
       handleKeyPressRef.current(event);
     };
