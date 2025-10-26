@@ -139,13 +139,18 @@ export const Game = ({ correctWord }: GameProps) => {
           </div>
         ))}
 
-        <Keyboard />
+        <Keyboard
+          correctWord={correctWord}
+          currentGuessIndex={currentGuessIndex}
+          guesses={guesses}
+          hasWonGame={hasWonGame}
+        />
 
-        {currentGuessIndex === ROWS_PER_GAME && !hasWonGame && (
-          <div id="correct-answer">
-            Correct Answer: {correctWord?.toUpperCase()}
-          </div>
-        )}
+        {/* {currentGuessIndex === ROWS_PER_GAME && !hasWonGame && ( */}
+        <div id="correct-answer">
+          Correct Answer: {correctWord?.toUpperCase()}
+        </div>
+        {/* )} */}
       </div>
     </>
   );

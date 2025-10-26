@@ -4,18 +4,80 @@ const firstRowKeys = ["q", "w", "e", "r", "t", "y", "u", "i", "o", "p"];
 const secondRowKeys = ["a", "s", "d", "f", "g", "h", "j", "k", "l"];
 const thirdRowKeys = ["enter", "z", "x", "c", "v", "b", "n", "m", "backspace"];
 
-export const Keyboard = () => {
+interface KeyboardProps {
+  correctWord: string;
+  currentGuessIndex: number;
+  guesses: (string | null)[];
+  hasWonGame: boolean;
+}
+
+export const Keyboard = ({
+  guesses,
+  correctWord,
+  currentGuessIndex,
+  hasWonGame,
+}: KeyboardProps) => {
+  const getKeyClassName = (key: string) => {
+    const correctWordLetters = correctWord.split("");
+    // When the user has won the game, we include the current guess because it's the
+    // answer to the wordle, so it should highlight those letters on the keyboard
+    const filteredGuesses = hasWonGame
+      ? guesses
+      : guesses
+          // Exclude the current guess, because we don't want to give away the
+          // letters until the user submits
+          .filter((_, i) => i !== currentGuessIndex);
+    const allGuessLetters = filteredGuesses
+      // The array is initialized with null guesses, so filter them out
+      .filter((guess) => !!guess)
+      .map((guess) => guess?.split(""));
+    const hasBeenGuessed =
+      (filteredGuesses?.find((guess) => guess?.includes(key))?.length ?? 0) > 0;
+    const isKeyInCorrectPosition = correctWord.includes(key);
+    const isKeyIncorrectGuess = !correctWord.includes(key);
+
+    let isKeyCorrect = false;
+
+    allGuessLetters.forEach((guess) => {
+      if (guess?.includes(key)) {
+        // If any of the guesses have any of the letters in the correct position,
+        // then the key should have the correct styling
+        guess?.forEach((guessLetter, j) => {
+          if (guessLetter === correctWordLetters[j] && guessLetter === key) {
+            isKeyCorrect = true;
+          }
+        });
+      }
+    });
+
+    let className = "key";
+
+    if (!hasBeenGuessed) {
+      return className;
+    }
+
+    if (isKeyCorrect) {
+      className += " correct";
+    } else if (isKeyInCorrectPosition) {
+      className += " correct-position";
+    } else if (isKeyIncorrectGuess) {
+      className += " incorrect";
+    }
+
+    return className;
+  };
+
   return (
     <div id="keyboard">
       <div className="keyboard-row">
-        {firstRowKeys.map((key) => (
-          <div className="key">{key}</div>
-        ))}
+        {firstRowKeys.map((key) => {
+          return <div className={getKeyClassName(key)}>{key}</div>;
+        })}
       </div>
 
       <div className="keyboard-row">
         {secondRowKeys.map((key) => (
-          <div className="key">{key}</div>
+          <div className={getKeyClassName(key)}>{key}</div>
         ))}
       </div>
 
@@ -45,7 +107,7 @@ export const Keyboard = () => {
             return <div className="key enter">{key}</div>;
           }
 
-          return <div className="key">{key}</div>;
+          return <div className={getKeyClassName(key)}>{key}</div>;
         })}
       </div>
     </div>

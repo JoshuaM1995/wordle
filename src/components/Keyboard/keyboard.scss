@@ -1,3 +1,5 @@
+@use "../../styles/colors" as *;
+
 #keyboard {
   display: flex;
   flex-direction: column;
@@ -29,6 +31,24 @@
 
       &.enter {
         font-size: 12px;
+      }
+
+      &.correct,
+      &.correct-position,
+      &.incorrect {
+        color: #fff;
+      }
+
+      &.correct {
+        background: $correct;
+      }
+
+      &.correct-position {
+        background: $correct-position;
+      }
+
+      &.incorrect {
+        background: $incorrect;
       }
     }
   }
