@@ -121,11 +121,17 @@ export const Game = ({ correctWord }: GameProps) => {
         <button
           id="new-wordle"
           onClick={() => {
-            localStorage.removeItem(LOCAL_STORAGE_KEYS.GUESSES);
-            localStorage.removeItem(LOCAL_STORAGE_KEYS.CURRENT_GUESS_INDEX);
-            localStorage.removeItem(LOCAL_STORAGE_KEYS.CORRECT_WORD);
-            localStorage.removeItem(LOCAL_STORAGE_KEYS.HAS_WON_GAME);
-            window.location.reload();
+            const hasConfirmed = window.confirm(
+              "Are you sure you want to create a new Wordle? All your progress will be lost."
+            );
+
+            if (hasConfirmed) {
+              localStorage.removeItem(LOCAL_STORAGE_KEYS.GUESSES);
+              localStorage.removeItem(LOCAL_STORAGE_KEYS.CURRENT_GUESS_INDEX);
+              localStorage.removeItem(LOCAL_STORAGE_KEYS.CORRECT_WORD);
+              localStorage.removeItem(LOCAL_STORAGE_KEYS.HAS_WON_GAME);
+              window.location.reload();
+            }
           }}
         >
           New Wordle
