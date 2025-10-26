@@ -1,9 +1,11 @@
+import { useLocalStorage } from "@uidotdev/usehooks";
 import { useEffect, useState } from "react";
+import { toast } from "react-hot-toast";
 import validWords from "../../data/valid-words.json";
+import { Keyboard } from "../Keyboard";
 import { Tile } from "../Tile";
 import "./game.scss";
-import { toast } from "react-hot-toast";
-import { Keyboard } from "../Keyboard";
+import { LOCAL_STORAGE_KEYS } from "../../constants";
 
 const ROWS_PER_GAME = 6;
 const TILES_PER_ROW = 5;
@@ -15,8 +17,14 @@ interface GameProps {
 }
 
 export const Game = ({ correctWord }: GameProps) => {
-  const [guesses, setGuesses] = useState<(string | null)[]>(emptyGuesses);
-  const [currentGuessIndex, setCurrentGuessIndex] = useState(0);
+  const [guesses, setGuesses] = useLocalStorage<(string | null)[]>(
+    LOCAL_STORAGE_KEYS.GUESSES,
+    emptyGuesses
+  );
+  const [currentGuessIndex, setCurrentGuessIndex] = useLocalStorage(
+    LOCAL_STORAGE_KEYS.CURRENT_GUESS_INDEX,
+    0
+  );
   const [hasWonGame, setHasWonGame] = useState(false);
 
   useEffect(() => {
@@ -144,6 +152,18 @@ export const Game = ({ correctWord }: GameProps) => {
           guesses={guesses}
           hasWonGame={hasWonGame}
         />
+
+        <button
+          id="new-wordle"
+          onClick={() => {
+            localStorage.removeItem(LOCAL_STORAGE_KEYS.GUESSES);
+            localStorage.removeItem(LOCAL_STORAGE_KEYS.CURRENT_GUESS_INDEX);
+            localStorage.removeItem(LOCAL_STORAGE_KEYS.CORRECT_WORD);
+            window.location.reload();
+          }}
+        >
+          New Wordle
+        </button>
 
         {currentGuessIndex === ROWS_PER_GAME && !hasWonGame && (
           <div id="correct-answer">
