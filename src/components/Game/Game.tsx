@@ -31,7 +31,12 @@ export const Game = ({ correctWord }: GameProps) => {
   );
 
   useEffect(() => {
-    const keyUpEvent = ({ key }: KeyboardEvent) => {
+    const keyUpEvent = ({ key, metaKey, ctrlKey }: KeyboardEvent) => {
+      // Don't process keys when modifier keys are pressed (Cmd/Ctrl shortcuts)
+      if (metaKey || ctrlKey) {
+        return;
+      }
+
       // The user has used up all their guesses or they won the game, so no point in applying the game logic
       if (currentGuessIndex === ROWS_PER_GAME || hasWonGame) {
         return;
