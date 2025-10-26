@@ -1,0 +1,8 @@
+const LOCAL_STORAGE_PREFIX = "wordle.joshuamcnabb";
+
+export const LOCAL_STORAGE_KEYS = {
+  GUESSES: `${LOCAL_STORAGE_PREFIX}.guesses`,
+  CURRENT_GUESS_INDEX: `${LOCAL_STORAGE_PREFIX}.currentGuessIndex`,
+  CORRECT_WORD: `${LOCAL_STORAGE_PREFIX}.correctWord`,
+  HAS_WON_GAME: `${LOCAL_STORAGE_PREFIX}.hasWonGame`,
+};

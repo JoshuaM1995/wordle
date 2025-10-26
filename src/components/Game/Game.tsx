@@ -1,9 +1,11 @@
-import { useEffect, useState } from "react";
+import { useLocalStorage } from "@uidotdev/usehooks";
+import { useEffect } from "react";
+import { toast } from "react-hot-toast";
+import { LOCAL_STORAGE_KEYS } from "../../constants";
 import validWords from "../../data/valid-words.json";
+import { Keyboard } from "../Keyboard";
 import { Tile } from "../Tile";
 import "./game.scss";
-import { toast } from "react-hot-toast";
-import { Keyboard } from "../Keyboard";
 
 const ROWS_PER_GAME = 6;
 const TILES_PER_ROW = 5;
@@ -15,9 +17,18 @@ interface GameProps {
 }
 
 export const Game = ({ correctWord }: GameProps) => {
-  const [guesses, setGuesses] = useState<(string | null)[]>(emptyGuesses);
-  const [currentGuessIndex, setCurrentGuessIndex] = useState(0);
-  const [hasWonGame, setHasWonGame] = useState(false);
+  const [guesses, setGuesses] = useLocalStorage<(string | null)[]>(
+    LOCAL_STORAGE_KEYS.GUESSES,
+    emptyGuesses
+  );
+  const [currentGuessIndex, setCurrentGuessIndex] = useLocalStorage(
+    LOCAL_STORAGE_KEYS.CURRENT_GUESS_INDEX,
+    0
+  );
+  const [hasWonGame, setHasWonGame] = useLocalStorage(
+    LOCAL_STORAGE_KEYS.HAS_WON_GAME,
+    false
+  );
 
   useEffect(() => {
     const keyUpEvent = ({ key }: KeyboardEvent) => {
@@ -106,6 +117,25 @@ export const Game = ({ correctWord }: GameProps) => {
     <>
       <div id="game">
         <h1 className="title">Wordle Practice</h1>
+
+        <button
+          id="new-wordle"
+          onClick={() => {
+            const hasConfirmed = window.confirm(
+              "Are you sure you want to create a new Wordle? All your progress will be lost."
+            );
+
+            if (hasConfirmed) {
+              localStorage.removeItem(LOCAL_STORAGE_KEYS.GUESSES);
+              localStorage.removeItem(LOCAL_STORAGE_KEYS.CURRENT_GUESS_INDEX);
+              localStorage.removeItem(LOCAL_STORAGE_KEYS.CORRECT_WORD);
+              localStorage.removeItem(LOCAL_STORAGE_KEYS.HAS_WON_GAME);
+              window.location.reload();
+            }
+          }}
+        >
+          New Wordle
+        </button>
 
         {Array.from({ length: ROWS_PER_GAME }).map((_, i) => (
           <div className="tile-row">
