@@ -3,6 +3,7 @@ import validWords from "../../data/valid-words.json";
 import { Tile } from "../Tile";
 import "./game.scss";
 import { toast } from "react-hot-toast";
+import { Keyboard } from "../Keyboard";
 
 const ROWS_PER_GAME = 6;
 const TILES_PER_ROW = 5;
@@ -137,6 +138,8 @@ export const Game = ({ correctWord }: GameProps) => {
             })}
           </div>
         ))}
+
+        <Keyboard />
 
         {currentGuessIndex === ROWS_PER_GAME && !hasWonGame && (
           <div id="correct-answer">
