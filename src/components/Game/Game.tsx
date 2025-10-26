@@ -1,11 +1,11 @@
 import { useLocalStorage } from "@uidotdev/usehooks";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { toast } from "react-hot-toast";
+import { LOCAL_STORAGE_KEYS } from "../../constants";
 import validWords from "../../data/valid-words.json";
 import { Keyboard } from "../Keyboard";
 import { Tile } from "../Tile";
 import "./game.scss";
-import { LOCAL_STORAGE_KEYS } from "../../constants";
 
 const ROWS_PER_GAME = 6;
 const TILES_PER_ROW = 5;
@@ -25,7 +25,10 @@ export const Game = ({ correctWord }: GameProps) => {
     LOCAL_STORAGE_KEYS.CURRENT_GUESS_INDEX,
     0
   );
-  const [hasWonGame, setHasWonGame] = useState(false);
+  const [hasWonGame, setHasWonGame] = useLocalStorage(
+    LOCAL_STORAGE_KEYS.HAS_WON_GAME,
+    false
+  );
 
   useEffect(() => {
     const keyUpEvent = ({ key }: KeyboardEvent) => {
@@ -115,6 +118,19 @@ export const Game = ({ correctWord }: GameProps) => {
       <div id="game">
         <h1 className="title">Wordle Practice</h1>
 
+        <button
+          id="new-wordle"
+          onClick={() => {
+            localStorage.removeItem(LOCAL_STORAGE_KEYS.GUESSES);
+            localStorage.removeItem(LOCAL_STORAGE_KEYS.CURRENT_GUESS_INDEX);
+            localStorage.removeItem(LOCAL_STORAGE_KEYS.CORRECT_WORD);
+            localStorage.removeItem(LOCAL_STORAGE_KEYS.HAS_WON_GAME);
+            window.location.reload();
+          }}
+        >
+          New Wordle
+        </button>
+
         {Array.from({ length: ROWS_PER_GAME }).map((_, i) => (
           <div className="tile-row">
             {Array.from({ length: TILES_PER_ROW }).map((__, j) => {
@@ -152,18 +168,6 @@ export const Game = ({ correctWord }: GameProps) => {
           guesses={guesses}
           hasWonGame={hasWonGame}
         />
-
-        <button
-          id="new-wordle"
-          onClick={() => {
-            localStorage.removeItem(LOCAL_STORAGE_KEYS.GUESSES);
-            localStorage.removeItem(LOCAL_STORAGE_KEYS.CURRENT_GUESS_INDEX);
-            localStorage.removeItem(LOCAL_STORAGE_KEYS.CORRECT_WORD);
-            window.location.reload();
-          }}
-        >
-          New Wordle
-        </button>
 
         {currentGuessIndex === ROWS_PER_GAME && !hasWonGame && (
           <div id="correct-answer">
