@@ -1,6 +1,18 @@
 @use "../../styles/colors" as *;
 @use "../../styles/breakpoints" as *;
 
+@keyframes flipTile {
+  0% {
+    transform: rotateX(0deg);
+  }
+  50% {
+    transform: rotateX(90deg);
+  }
+  100% {
+    transform: rotateX(0deg);
+  }
+}
+
 .tile {
   width: 50px;
   height: 50px;
@@ -11,6 +23,8 @@
   font-size: 24px;
   font-weight: bold;
   text-transform: uppercase;
+  transform-style: preserve-3d;
+  perspective: 1000px;
 
   @include sm {
     width: 62px;
@@ -41,5 +55,9 @@
   &.incorrect {
     background: $incorrect;
     border: 2px solid $incorrect;
+  }
+
+  &.flip {
+    animation: flipTile 0.8s ease-in-out;
   }
 }

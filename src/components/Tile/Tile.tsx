@@ -5,6 +5,8 @@ interface TileProps {
   isLetterCorrect?: boolean;
   isLetterInCorrectPosition?: boolean;
   isLetterIncorrect?: boolean;
+  tileIndex: number;
+  shouldFlip: boolean;
 }
 
 export const Tile = ({
@@ -12,6 +14,8 @@ export const Tile = ({
   isLetterCorrect,
   isLetterInCorrectPosition,
   isLetterIncorrect,
+  tileIndex,
+  shouldFlip,
 }: TileProps) => {
   let className = "tile";
 
@@ -27,5 +31,16 @@ export const Tile = ({
     className += " has-letter";
   }
 
-  return <div className={className}>{letter}</div>;
+  if (shouldFlip) {
+    className += " flip";
+  }
+
+  return (
+    <div
+      className={className}
+      style={{ animationDelay: `${tileIndex * 250}ms` }}
+    >
+      {letter}
+    </div>
+  );
 };

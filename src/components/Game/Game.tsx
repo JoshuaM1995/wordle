@@ -51,17 +51,29 @@ export const Game = ({ correctWord }: GameProps) => {
                 guessForTile === "" ||
                 (i === currentGuessIndex && !hasWonGame)
               ) {
-                return <Tile key={i} letter={guessForTile} />;
+                return (
+                  <Tile
+                    key={i}
+                    tileIndex={j}
+                    shouldFlip={false}
+                    letter={guessForTile}
+                  />
+                );
               }
 
               const isLetterIncorrect = !correctWord.includes(guessForTile);
               const isLetterInCorrectPosition =
                 correctWord.includes(guessForTile);
               const isLetterCorrect = correctWordLetters[j] === guessForTile;
+              const isCurrentRow = i === currentGuessIndex;
+              const shouldFlip =
+                i < currentGuessIndex || (isCurrentRow && hasWonGame);
 
               return (
                 <Tile
                   key={i}
+                  tileIndex={j}
+                  shouldFlip={shouldFlip}
                   letter={guessForTile}
                   isLetterCorrect={isLetterCorrect}
                   isLetterInCorrectPosition={isLetterInCorrectPosition}
