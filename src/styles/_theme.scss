@@ -7,7 +7,7 @@
 }
 
 [data-theme="light"] {
-  --tile-border-color: #e0e7ff;
+  --tile-border-color: #bfc6d9;
   --tile-border-color-filled: #818cf8;
   --key: #9ca3af;
   --key-pressed: #6b7280;
@@ -16,9 +16,13 @@
   --incorrect: #6b7280;
   --topbar-border: #e5e7eb;
   --background: #fef3f2;
-  --text: #1f2937;
+  --text: #283647;
   --correct-answer-background: #1f2937;
   --correct-answer-text: #fef3f2;
+  --toast-background: #1f2937;
+  --toast-text: #ffffff;
+  --toast-success-background: #10b981;
+  --toast-success-text: #ffffff;
 }
 
 [data-theme="dark"] {
@@ -31,9 +35,13 @@
   --incorrect: #374151;
   --topbar-border: #2b3c4f;
   --background: #0f172a;
-  --text: #f1f5f9;
+  --text: #e3e6e8;
   --correct-answer-background: #6366f1;
   --correct-answer-text: #ffffff;
+  --toast-background: #30435e;
+  --toast-text: #f1f5f9;
+  --toast-success-background: #34d399;
+  --toast-success-text: #0f172a;
 }
 
 // Smooth transitions for theme changes
