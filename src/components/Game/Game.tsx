@@ -65,7 +65,7 @@ export const Game = ({ correctWord }: GameProps) => {
       )}
 
       <div id="game">
-        <h1 className="title">Wordle Practice</h1>
+        <h1 className="title">Wordle Practice 2</h1>
 
         <button
           id="new-wordle"
