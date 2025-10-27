@@ -1,3 +1,4 @@
+@use "sass:color";
 @use "../../styles/colors" as *;
 @use "../../styles/breakpoints" as *;
 
@@ -35,7 +36,7 @@
       font-weight: bold;
       font-size: 16px;
       cursor: pointer;
-      transition: scale 0.08s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: scale 0.05s cubic-bezier(0.4, 0, 0.2, 1);
       flex-shrink: 0;
 
       @include sm {
@@ -46,7 +47,6 @@
 
       &:active {
         scale: 0.85;
-        background: #b8bcc0 !important;
         -webkit-tap-highlight-color: transparent !important;
         -webkit-touch-callout: none !important;
         -webkit-user-select: none !important;
@@ -56,15 +56,29 @@
       }
 
       &:focus {
-        background: #b8bcc0 !important;
         outline: none !important;
         -webkit-tap-highlight-color: transparent !important;
       }
 
       &.key-pressed {
         scale: 0.85;
-        background: #b8bcc0 !important;
+        background: color.scale($key, $lightness: -10%) !important;
         -webkit-tap-highlight-color: transparent !important;
+
+        &.correct {
+          background: color.scale($correct, $lightness: -10%) !important;
+        }
+
+        &.correct-position {
+          background: color.scale(
+            $correct-position,
+            $lightness: -10%
+          ) !important;
+        }
+
+        &.incorrect {
+          background: color.scale($incorrect, $lightness: -10%) !important;
+        }
       }
 
       &.backspace,
