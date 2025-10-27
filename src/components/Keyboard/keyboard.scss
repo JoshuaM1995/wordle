@@ -13,6 +13,21 @@
   padding: 0 10px;
   box-sizing: border-box;
 
+  &.disabled {
+    pointer-events: none;
+
+    .key {
+      &:active {
+        scale: 1 !important;
+      }
+
+      &.key-pressed {
+        scale: 1 !important;
+        background: inherit !important;
+      }
+    }
+  }
+
   .keyboard-row {
     display: flex;
     flex-direction: row;

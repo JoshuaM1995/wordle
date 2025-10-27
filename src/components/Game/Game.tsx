@@ -7,14 +7,44 @@ import { useGameState } from "../../hooks/useGameState";
 import { Keyboard } from "../Keyboard";
 import { Tile } from "../Tile";
 import "./game.scss";
+import { useState, useEffect } from "react";
 
 interface GameProps {
   correctWord: string;
 }
 
 export const Game = ({ correctWord }: GameProps) => {
-  const { guesses, currentGuessIndex, hasWonGame, handleKeyPress } =
-    useGameState(correctWord);
+  const {
+    guesses,
+    currentGuessIndex,
+    hasWonGame,
+    handleKeyPress,
+    lastSubmittedRow,
+    isAnimating,
+  } = useGameState(correctWord);
+  const [showCorrectAnswer, setShowCorrectAnswer] = useState(
+    currentGuessIndex === ROWS_PER_GAME && !hasWonGame
+  );
+
+  useEffect(() => {
+    if (
+      currentGuessIndex === ROWS_PER_GAME &&
+      !hasWonGame &&
+      lastSubmittedRow === ROWS_PER_GAME - 1
+    ) {
+      const FLIP_ANIMATION_DURATION = 800;
+      const TILE_FLIP_DELAY = 250;
+      const LAST_TILE_INDEX = TILES_PER_ROW - 1;
+      const totalAnimationTime =
+        LAST_TILE_INDEX * TILE_FLIP_DELAY + FLIP_ANIMATION_DURATION;
+
+      const timer = setTimeout(() => {
+        setShowCorrectAnswer(true);
+      }, totalAnimationTime);
+
+      return () => clearTimeout(timer);
+    }
+  }, [currentGuessIndex, hasWonGame, lastSubmittedRow]);
 
   return (
     <>
@@ -51,17 +81,32 @@ export const Game = ({ correctWord }: GameProps) => {
                 guessForTile === "" ||
                 (i === currentGuessIndex && !hasWonGame)
               ) {
-                return <Tile key={i} letter={guessForTile} />;
+                return (
+                  <Tile
+                    key={`${i}-${j}`}
+                    tileIndex={j}
+                    shouldFlip={false}
+                    shouldAnimate={false}
+                    letter={guessForTile}
+                  />
+                );
               }
 
               const isLetterIncorrect = !correctWord.includes(guessForTile);
               const isLetterInCorrectPosition =
                 correctWord.includes(guessForTile);
               const isLetterCorrect = correctWordLetters[j] === guessForTile;
+              const isCurrentRow = i === currentGuessIndex;
+              const shouldFlip =
+                i < currentGuessIndex || (isCurrentRow && hasWonGame);
+              const shouldAnimate = i === lastSubmittedRow;
 
               return (
                 <Tile
-                  key={i}
+                  key={`${i}-${j}`}
+                  tileIndex={j}
+                  shouldFlip={shouldFlip}
+                  shouldAnimate={shouldAnimate}
                   letter={guessForTile}
                   isLetterCorrect={isLetterCorrect}
                   isLetterInCorrectPosition={isLetterInCorrectPosition}
@@ -78,13 +123,17 @@ export const Game = ({ correctWord }: GameProps) => {
           guesses={guesses}
           hasWonGame={hasWonGame}
           handleKeyPress={handleKeyPress}
+          isAnimating={isAnimating}
+          lastSubmittedRow={lastSubmittedRow}
         />
 
-        {currentGuessIndex === ROWS_PER_GAME && !hasWonGame && (
-          <div id="correct-answer">
-            Correct Answer: {correctWord?.toUpperCase()}
-          </div>
-        )}
+        {currentGuessIndex === ROWS_PER_GAME &&
+          !hasWonGame &&
+          showCorrectAnswer && (
+            <div id="correct-answer" className="fade-in">
+              Correct Answer: {correctWord?.toUpperCase()}
+            </div>
+          )}
       </div>
     </>
   );

@@ -1,6 +1,48 @@
 @use "../../styles/colors" as *;
 @use "../../styles/breakpoints" as *;
 
+:root {
+  --color-correct: #{$correct};
+  --color-correct-position: #{$correct-position};
+  --color-incorrect: #{$incorrect};
+}
+
+@keyframes flipTile {
+  0% {
+    transform: rotateX(0deg);
+  }
+  50% {
+    transform: rotateX(90deg);
+  }
+  80% {
+    transform: rotateX(45deg);
+  }
+  85% {
+    transform: rotateX(45deg);
+    background: var(--final-color);
+    border-color: var(--final-color);
+    color: #fff;
+  }
+  100% {
+    transform: rotateX(0deg);
+    background: var(--final-color);
+    border-color: var(--final-color);
+    color: #fff;
+  }
+}
+
+@keyframes popIn {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
 .tile {
   width: 50px;
   height: 50px;
@@ -11,6 +53,9 @@
   font-size: 24px;
   font-weight: bold;
   text-transform: uppercase;
+  transform-style: preserve-3d;
+  perspective: 1000px;
+  transition: border-color 0.1s ease;
 
   @include sm {
     width: 62px;
@@ -28,6 +73,10 @@
     border-color: $tile-border-color-filled;
   }
 
+  &.pop-in {
+    animation: popIn 0.1s ease-in-out;
+  }
+
   &.correct {
     background: $correct;
     border: 2px solid $correct;
@@ -41,5 +90,11 @@
   &.incorrect {
     background: $incorrect;
     border: 2px solid $incorrect;
+  }
+
+  &.flip {
+    animation: flipTile 0.8s ease-in-out;
+    animation-fill-mode: both;
+    animation-delay: var(--flip-delay, 0ms);
   }
 }

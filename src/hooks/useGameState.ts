@@ -2,6 +2,7 @@ import { useLocalStorage } from "@uidotdev/usehooks";
 import { toast } from "react-hot-toast";
 import { LOCAL_STORAGE_KEYS, ROWS_PER_GAME, TILES_PER_ROW } from "../constants";
 import validWords from "../data/valid-words.json";
+import { useState, useEffect } from "react";
 
 export interface HandleKeyPressOptions {
   key: string;
@@ -25,10 +26,45 @@ export const useGameState = (correctWord: string) => {
     LOCAL_STORAGE_KEYS.HAS_WON_GAME,
     false
   );
+  const [lastSubmittedRow, setLastSubmittedRow] = useState<number>(-1);
+  const [isAnimating, setIsAnimating] = useState(false);
+  const [shouldShowWinToast, setShouldShowWinToast] = useState(false);
+
+  useEffect(() => {
+    if (lastSubmittedRow >= 0) {
+      setIsAnimating(true);
+      const FLIP_ANIMATION_DURATION = 800;
+      const TILE_FLIP_DELAY = 250;
+      const LAST_TILE_INDEX = TILES_PER_ROW - 1;
+      const totalAnimationTime =
+        LAST_TILE_INDEX * TILE_FLIP_DELAY + FLIP_ANIMATION_DURATION;
+
+      const timer = setTimeout(() => {
+        setIsAnimating(false);
+
+        if (shouldShowWinToast) {
+          toast("You guessed the correct word!", {
+            style: {
+              color: "white",
+              backgroundColor: "green",
+            },
+          });
+          setShouldShowWinToast(false);
+        }
+      }, totalAnimationTime);
+
+      return () => clearTimeout(timer);
+    }
+  }, [lastSubmittedRow, shouldShowWinToast]);
 
   const handleKeyPress = ({ key, metaKey, ctrlKey }: HandleKeyPressOptions) => {
     // Don't process keys when modifier keys are pressed (Cmd/Ctrl shortcuts)
     if (metaKey || ctrlKey) {
+      return;
+    }
+
+    // Block input while animations are running
+    if (isAnimating) {
       return;
     }
 
@@ -77,16 +113,13 @@ export const useGameState = (correctWord: string) => {
 
       if (currentGuess === correctWord) {
         setHasWonGame(true);
-        toast("You guessed the correct word!", {
-          style: {
-            color: "white",
-            backgroundColor: "green",
-          },
-        });
+        setLastSubmittedRow(currentGuessIndex);
+        setShouldShowWinToast(true);
         return;
       }
 
       // The answer is incorrect, so go to the next row
+      setLastSubmittedRow(currentGuessIndex);
       setCurrentGuessIndex((prevIndex) => prevIndex + 1);
       return;
     }
@@ -111,5 +144,7 @@ export const useGameState = (correctWord: string) => {
     currentGuessIndex,
     hasWonGame,
     handleKeyPress,
+    lastSubmittedRow,
+    isAnimating,
   };
 };
