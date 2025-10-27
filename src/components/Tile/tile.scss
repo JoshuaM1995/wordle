@@ -59,5 +59,6 @@
 
   &.flip {
     animation: flipTile 0.8s ease-in-out;
+    animation-fill-mode: both;
   }
 }

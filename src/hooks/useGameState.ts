@@ -2,6 +2,7 @@ import { useLocalStorage } from "@uidotdev/usehooks";
 import { toast } from "react-hot-toast";
 import { LOCAL_STORAGE_KEYS, ROWS_PER_GAME, TILES_PER_ROW } from "../constants";
 import validWords from "../data/valid-words.json";
+import { useState } from "react";
 
 export interface HandleKeyPressOptions {
   key: string;
@@ -25,6 +26,7 @@ export const useGameState = (correctWord: string) => {
     LOCAL_STORAGE_KEYS.HAS_WON_GAME,
     false
   );
+  const [lastSubmittedRow, setLastSubmittedRow] = useState<number>(-1);
 
   const handleKeyPress = ({ key, metaKey, ctrlKey }: HandleKeyPressOptions) => {
     // Don't process keys when modifier keys are pressed (Cmd/Ctrl shortcuts)
@@ -77,6 +79,7 @@ export const useGameState = (correctWord: string) => {
 
       if (currentGuess === correctWord) {
         setHasWonGame(true);
+        setLastSubmittedRow(currentGuessIndex);
         toast("You guessed the correct word!", {
           style: {
             color: "white",
@@ -87,6 +90,7 @@ export const useGameState = (correctWord: string) => {
       }
 
       // The answer is incorrect, so go to the next row
+      setLastSubmittedRow(currentGuessIndex);
       setCurrentGuessIndex((prevIndex) => prevIndex + 1);
       return;
     }
@@ -111,5 +115,6 @@ export const useGameState = (correctWord: string) => {
     currentGuessIndex,
     hasWonGame,
     handleKeyPress,
+    lastSubmittedRow,
   };
 };

@@ -13,7 +13,7 @@ interface GameProps {
 }
 
 export const Game = ({ correctWord }: GameProps) => {
-  const { guesses, currentGuessIndex, hasWonGame, handleKeyPress } =
+  const { guesses, currentGuessIndex, hasWonGame, handleKeyPress, lastSubmittedRow } =
     useGameState(correctWord);
 
   return (
@@ -56,6 +56,7 @@ export const Game = ({ correctWord }: GameProps) => {
                     key={i}
                     tileIndex={j}
                     shouldFlip={false}
+                    shouldAnimate={false}
                     letter={guessForTile}
                   />
                 );
@@ -68,12 +69,14 @@ export const Game = ({ correctWord }: GameProps) => {
               const isCurrentRow = i === currentGuessIndex;
               const shouldFlip =
                 i < currentGuessIndex || (isCurrentRow && hasWonGame);
+              const shouldAnimate = i === lastSubmittedRow;
 
               return (
                 <Tile
                   key={i}
                   tileIndex={j}
                   shouldFlip={shouldFlip}
+                  shouldAnimate={shouldAnimate}
                   letter={guessForTile}
                   isLetterCorrect={isLetterCorrect}
                   isLetterInCorrectPosition={isLetterInCorrectPosition}
