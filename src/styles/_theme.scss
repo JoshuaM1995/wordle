@@ -1,44 +1,42 @@
 // Shared colors across all themes
 :root {
   --button-text: #ffffff;
-  --dark-mode-toggle-background: #5e61e6;
-  --dark-mode-toggle-sun: #ffa41b;
+  --dark-mode-toggle-background: #6366f1;
+  --dark-mode-toggle-sun: #ffa726;
   --dark-mode-toggle-moon: #fff;
 }
 
-// Light theme (default)
 [data-theme="light"] {
-  --tile-border-color: #d4d6da;
-  --tile-border-color-filled: #86898b;
-  --key: #d4d6da;
-  --key-pressed: #c0c2c6;
-  --correct: #6aa964;
-  --correct-position: #cab559;
-  --incorrect: #797c7e;
-  --topbar-border: #dfdfdf;
-  --background: #ffffff;
-  --text: #000000;
-  --correct-answer-background: #000000;
-  --correct-answer-text: #ffffff;
+  --tile-border-color: #e0e7ff;
+  --tile-border-color-filled: #818cf8;
+  --key: #9ca3af;
+  --key-pressed: #6b7280;
+  --correct: #10b981;
+  --correct-position: #f59e0b;
+  --incorrect: #6b7280;
+  --topbar-border: #e5e7eb;
+  --background: #fef3f2;
+  --text: #1f2937;
+  --correct-answer-background: #1f2937;
+  --correct-answer-text: #fef3f2;
 }
 
-// Dark theme
 [data-theme="dark"] {
-  --tile-border-color: #3a3a3c;
-  --tile-border-color-filled: #565658;
-  --key: #818384;
-  --key-pressed: #6b6d6f;
-  --correct: #548d4e;
-  --correct-position: #b6a03b;
-  --incorrect: #3a3a3c;
-  --topbar-border: #424242;
-  --background: #121213;
-  --text: #ffffff;
-  --correct-answer-background: #ffffff;
-  --correct-answer-text: #000000;
+  --tile-border-color: #4b5563;
+  --tile-border-color-filled: #6b7280;
+  --key: #6b7280;
+  --key-pressed: #4b5563;
+  --correct: #34d399;
+  --correct-position: #fbbf24;
+  --incorrect: #374151;
+  --topbar-border: #2b3c4f;
+  --background: #0f172a;
+  --text: #f1f5f9;
+  --correct-answer-background: #6366f1;
+  --correct-answer-text: #ffffff;
 }
 
 // Smooth transitions for theme changes
 body {
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition: all 0.3s ease;
 }
