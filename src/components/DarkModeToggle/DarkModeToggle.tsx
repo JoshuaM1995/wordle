@@ -15,10 +15,27 @@ export const DarkModeToggle = () => {
         window.matchMedia &&
         window.matchMedia("(prefers-color-scheme: dark)").matches;
 
-      setIsDarkMode(prefersDarkMode);
+      toggleDarkMode(prefersDarkMode);
+
+      return;
     }
+
+    const html = document.documentElement;
+    html.setAttribute("data-theme", isDarkMode ? "dark" : "light");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const toggleDarkMode = (shouldSetDarkMode: boolean) => {
+    const html = document.documentElement;
+
+    if (shouldSetDarkMode) {
+      html.setAttribute("data-theme", "dark");
+    } else {
+      html.setAttribute("data-theme", "light");
+    }
+
+    setIsDarkMode(shouldSetDarkMode);
+  };
 
   return (
     <div id="dark-mode-toggle">
@@ -26,9 +43,7 @@ export const DarkModeToggle = () => {
         id="toggle"
         type="checkbox"
         checked={isDarkMode ?? false}
-        onChange={({ target: { checked } }) => {
-          setIsDarkMode(checked);
-        }}
+        onChange={({ target: { checked } }) => toggleDarkMode(checked)}
       />
       <label htmlFor="toggle"></label>
     </div>
