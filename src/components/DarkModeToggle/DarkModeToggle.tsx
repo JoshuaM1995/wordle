@@ -1,7 +1,7 @@
 import { useLocalStorage } from "@uidotdev/usehooks";
 import "./dark-mode-toggle.scss";
 import { LOCAL_STORAGE_KEYS } from "../../constants";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 export const DarkModeToggle = () => {
   const getInitialValue = () => {
@@ -10,7 +10,7 @@ export const DarkModeToggle = () => {
       if (stored !== null && stored !== "null") {
         return JSON.parse(stored);
       }
-    } catch (e) {
+    } catch {
       // Ignore parse errors
     }
     const prefersDark =
@@ -24,13 +24,36 @@ export const DarkModeToggle = () => {
     getInitialValue()
   );
 
+  const userHasManualToggle = useRef(false);
+
   // Apply theme whenever isDarkMode changes
   useEffect(() => {
     const html = document.documentElement;
     html.setAttribute("data-theme", isDarkMode ? "dark" : "light");
   }, [isDarkMode]);
 
+  // Listen for system preference changes
+  useEffect(() => {
+    if (!window.matchMedia) return;
+
+    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+
+    const handleSystemThemeChange = (e: MediaQueryListEvent) => {
+      // Only update if user hasn't manually toggled the preference
+      if (!userHasManualToggle.current) {
+        setIsDarkMode(e.matches);
+      }
+    };
+
+    mediaQuery.addEventListener("change", handleSystemThemeChange);
+
+    return () => {
+      mediaQuery.removeEventListener("change", handleSystemThemeChange);
+    };
+  }, [setIsDarkMode]);
+
   const toggleDarkMode = (shouldSetDarkMode: boolean) => {
+    userHasManualToggle.current = true;
     setIsDarkMode(shouldSetDarkMode);
   };
 
