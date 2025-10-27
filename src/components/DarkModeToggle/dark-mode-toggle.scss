@@ -1,3 +1,5 @@
+@use "../../styles/colors" as *;
+
 // https://codepen.io/havardob/pen/MWawKVy
 #dark-mode-toggle {
   *,
@@ -9,10 +11,10 @@
   label {
     position: relative;
     display: block;
-    width: 50px;
-    height: 30px;
+    width: 60px;
+    height: 36px;
     border-radius: 100px;
-    background-color: #000839;
+    background-color: $dark-mode-toggle-background;
     overflow: hidden;
     cursor: pointer;
 
@@ -21,21 +23,24 @@
       display: block;
       position: absolute;
       content: "";
-      width: 20px;
-      height: 20px;
+      width: 24px;
+      height: 24px;
       border-radius: 50%;
-      top: 5px;
-      left: 5px;
+      top: 6px;
+      left: 6px;
       transition: 0.5s ease;
     }
 
     &:before {
-      background-color: #ffa41b;
+      background-color: $dark-mode-toggle-sun;
     }
 
     &:after {
-      background-color: #000839;
-      left: -15px;
+      background-color: $dark-mode-toggle-background;
+      width: 20px;
+      height: 20px;
+      top: 8px;
+      left: -18px;
       transform: scale(0.00001);
     }
   }
@@ -45,12 +50,12 @@
 
     &:checked + label {
       &:before {
-        background-color: #fff;
-        transform: translateX(20px);
+        background-color: $dark-mode-toggle-moon;
+        transform: translateX(24px);
       }
 
       &:after {
-        transform: translateX(35px) scale(1);
+        transform: translateX(42px) scale(1);
       }
     }
   }
