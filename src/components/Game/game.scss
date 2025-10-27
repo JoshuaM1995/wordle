@@ -5,12 +5,15 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  height: 100vh;
+  justify-content: flex-start;
+  min-height: 100vh;
   gap: 5px;
+  padding: 20px 10px;
+  box-sizing: border-box;
 
-  @include max-sm {
-    justify-content: flex-start;
+  @include sm {
+    justify-content: center;
+    padding: 0;
   }
 
   .title {
@@ -19,7 +22,11 @@
 
   .tile-row {
     display: flex;
-    gap: 5px;
+    gap: 3px;
+
+    @include sm {
+      gap: 5px;
+    }
   }
 
   #new-wordle {

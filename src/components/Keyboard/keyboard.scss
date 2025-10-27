@@ -1,4 +1,6 @@
+@use "sass:color";
 @use "../../styles/colors" as *;
+@use "../../styles/breakpoints" as *;
 
 #keyboard {
   display: flex;
@@ -6,31 +8,94 @@
   align-items: center;
   gap: 5px;
   margin-top: 10px;
+  width: 100%;
+  max-width: 500px;
+  padding: 0 10px;
+  box-sizing: border-box;
 
   .keyboard-row {
     display: flex;
     flex-direction: row;
-    gap: 5px;
+    gap: 3px;
+    justify-content: center;
+    width: 100%;
+
+    @include sm {
+      gap: 5px;
+    }
 
     .key {
       background: #d4d6da;
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 40px;
-      height: 50px;
+      width: 32px;
+      height: 40px;
       border-radius: 4px;
       text-transform: uppercase;
       font-weight: bold;
-      font-size: 20px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: scale 0.05s cubic-bezier(0.4, 0, 0.2, 1);
+      flex-shrink: 0;
+
+      @include sm {
+        width: 40px;
+        height: 50px;
+        font-size: 20px;
+      }
+
+      &:active {
+        scale: 0.85;
+        -webkit-tap-highlight-color: transparent !important;
+        -webkit-touch-callout: none !important;
+        -webkit-user-select: none !important;
+        -moz-user-select: none !important;
+        -ms-user-select: none !important;
+        user-select: none !important;
+      }
+
+      &:focus {
+        outline: none !important;
+        -webkit-tap-highlight-color: transparent !important;
+      }
+
+      &.key-pressed {
+        scale: 0.85;
+        background: color.scale($key, $lightness: -10%) !important;
+        -webkit-tap-highlight-color: transparent !important;
+
+        &.correct {
+          background: color.scale($correct, $lightness: -10%) !important;
+        }
+
+        &.correct-position {
+          background: color.scale(
+            $correct-position,
+            $lightness: -10%
+          ) !important;
+        }
+
+        &.incorrect {
+          background: color.scale($incorrect, $lightness: -10%) !important;
+        }
+      }
 
       &.backspace,
       &.enter {
-        width: 70px;
+        width: 50px;
+
+        @include sm {
+          width: 70px;
+        }
       }
 
       &.enter {
-        font-size: 12px;
+        font-size: 10px;
+
+        @include sm {
+          font-size: 12px;
+        }
       }
 
       &.correct,
