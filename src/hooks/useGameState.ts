@@ -32,7 +32,6 @@ export const useGameState = (correctWord: string) => {
 
   useEffect(() => {
     if (lastSubmittedRow >= 0) {
-      setIsAnimating(true);
       const FLIP_ANIMATION_DURATION = 800;
       const TILE_FLIP_DELAY = 250;
       const LAST_TILE_INDEX = TILES_PER_ROW - 1;
@@ -114,12 +113,14 @@ export const useGameState = (correctWord: string) => {
       if (currentGuess === correctWord) {
         setHasWonGame(true);
         setLastSubmittedRow(currentGuessIndex);
+        setIsAnimating(true);
         setShouldShowWinToast(true);
         return;
       }
 
       // The answer is incorrect, so go to the next row
       setLastSubmittedRow(currentGuessIndex);
+      setIsAnimating(true);
       setCurrentGuessIndex((prevIndex) => prevIndex + 1);
       return;
     }
