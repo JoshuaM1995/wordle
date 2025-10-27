@@ -5,7 +5,7 @@ Got bored so I wanted to recreate Wordle.
 ## Coming Soon:
 
 - [x] Saving current word and guesses in local storage, so they persist when refreshing the page.
-- [ ] Making `Keyboard` component functional.
+- [x] Making `Keyboard` component functional.
 - [ ] Adding animations.
 - [ ] Dark mode.
 
