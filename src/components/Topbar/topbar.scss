@@ -1,0 +1,6 @@
+@use "../../styles/colors" as *;
+
+#topbar {
+  height: 60px;
+  border-bottom: 1px solid $topbar-border;
+}
