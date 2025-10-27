@@ -53,7 +53,7 @@ export const Game = ({ correctWord }: GameProps) => {
               ) {
                 return (
                   <Tile
-                    key={i}
+                    key={`${i}-${j}`}
                     tileIndex={j}
                     shouldFlip={false}
                     shouldAnimate={false}
@@ -73,7 +73,7 @@ export const Game = ({ correctWord }: GameProps) => {
 
               return (
                 <Tile
-                  key={i}
+                  key={`${i}-${j}`}
                   tileIndex={j}
                   shouldFlip={shouldFlip}
                   shouldAnimate={shouldAnimate}
