@@ -7,6 +7,7 @@ import { useGameState } from "../../hooks/useGameState";
 import { Keyboard } from "../Keyboard";
 import { Tile } from "../Tile";
 import "./game.scss";
+import { useState, useEffect } from "react";
 
 interface GameProps {
   correctWord: string;
@@ -15,6 +16,24 @@ interface GameProps {
 export const Game = ({ correctWord }: GameProps) => {
   const { guesses, currentGuessIndex, hasWonGame, handleKeyPress, lastSubmittedRow } =
     useGameState(correctWord);
+  const [showCorrectAnswer, setShowCorrectAnswer] = useState(
+    currentGuessIndex === ROWS_PER_GAME && !hasWonGame
+  );
+
+  useEffect(() => {
+    if (currentGuessIndex === ROWS_PER_GAME && !hasWonGame && lastSubmittedRow === ROWS_PER_GAME - 1) {
+      const FLIP_ANIMATION_DURATION = 800;
+      const TILE_FLIP_DELAY = 250;
+      const LAST_TILE_INDEX = TILES_PER_ROW - 1;
+      const totalAnimationTime = LAST_TILE_INDEX * TILE_FLIP_DELAY + FLIP_ANIMATION_DURATION;
+      
+      const timer = setTimeout(() => {
+        setShowCorrectAnswer(true);
+      }, totalAnimationTime);
+
+      return () => clearTimeout(timer);
+    }
+  }, [currentGuessIndex, hasWonGame, lastSubmittedRow]);
 
   return (
     <>
@@ -95,8 +114,8 @@ export const Game = ({ correctWord }: GameProps) => {
           handleKeyPress={handleKeyPress}
         />
 
-        {currentGuessIndex === ROWS_PER_GAME && !hasWonGame && (
-          <div id="correct-answer">
+        {currentGuessIndex === ROWS_PER_GAME && !hasWonGame && showCorrectAnswer && (
+          <div id="correct-answer" className="fade-in">
             Correct Answer: {correctWord?.toUpperCase()}
           </div>
         )}
