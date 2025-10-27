@@ -4,17 +4,19 @@ import { LOCAL_STORAGE_KEYS } from "../../constants";
 import { useEffect } from "react";
 
 export const DarkModeToggle = () => {
-  const [isDarkMode, setIsDarkMode] = useLocalStorage(
+  const [isDarkMode, setIsDarkMode] = useLocalStorage<boolean | null>(
     LOCAL_STORAGE_KEYS.DARK_MODE,
-    false
+    null
   );
 
   useEffect(() => {
-    const prefersDarkMode =
-      window.matchMedia &&
-      window.matchMedia("(prefers-color-scheme: dark)").matches;
+    if (isDarkMode === null) {
+      const prefersDarkMode =
+        window.matchMedia &&
+        window.matchMedia("(prefers-color-scheme: dark)").matches;
 
-    setIsDarkMode(prefersDarkMode);
+      setIsDarkMode(prefersDarkMode);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -23,7 +25,7 @@ export const DarkModeToggle = () => {
       <input
         id="toggle"
         type="checkbox"
-        checked={isDarkMode}
+        checked={isDarkMode ?? false}
         onChange={({ target: { checked } }) => {
           setIsDarkMode(checked);
         }}
