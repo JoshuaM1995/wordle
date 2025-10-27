@@ -1,40 +1,41 @@
-// Light theme (default)
+// Shared colors across all themes
 :root {
-  --tile-border-color: #d4d6da;
-  --tile-border-color-filled: #86898b;
-  --key: #d4d6da;
-  --key-pressed: #c0c2c6;
-  --correct: #6aaa64;
-  --incorrect: #797c7e;
-  --correct-position: #c9b559;
-  --topbar-border: #dfdfdf;
-  --background: #ffffff;
-  --text: #000000;
   --button-text: #ffffff;
-  --correct-answer-background: #000000;
-  --correct-answer-text: #ffffff;
   --dark-mode-toggle-background: #5e61e6;
   --dark-mode-toggle-sun: #ffa41b;
   --dark-mode-toggle-moon: #fff;
 }
 
+// Light theme (default)
+[data-theme="light"] {
+  --tile-border-color: #d4d6da;
+  --tile-border-color-filled: #86898b;
+  --key: #d4d6da;
+  --key-pressed: #c0c2c6;
+  --correct: #6aa964;
+  --correct-position: #cab559;
+  --incorrect: #797c7e;
+  --topbar-border: #dfdfdf;
+  --background: #ffffff;
+  --text: #000000;
+  --correct-answer-background: #000000;
+  --correct-answer-text: #ffffff;
+}
+
+// Dark theme
 [data-theme="dark"] {
   --tile-border-color: #3a3a3c;
   --tile-border-color-filled: #565658;
   --key: #818384;
   --key-pressed: #6b6d6f;
-  --correct: #6aaa64;
+  --correct: #548d4e;
+  --correct-position: #b6a03b;
   --incorrect: #3a3a3c;
-  --correct-position: #b59f3b;
   --topbar-border: #424242;
   --background: #121213;
   --text: #ffffff;
-  --button-text: #ffffff;
   --correct-answer-background: #ffffff;
   --correct-answer-text: #000000;
-  --dark-mode-toggle-background: #5e61e6;
-  --dark-mode-toggle-sun: #ffa41b;
-  --dark-mode-toggle-moon: #fff;
 }
 
 // Smooth transitions for theme changes
