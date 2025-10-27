@@ -7,7 +7,10 @@ Got bored so I wanted to recreate Wordle.
 - [x] Saving current word and guesses in local storage, so they persist when refreshing the page.
 - [x] Making `Keyboard` component functional.
 - [x] Adding animations.
-- [ ] Dark mode.
+- [x] Dark mode.
+- [ ] Confetti animation when guessing correctly
+- [ ] Improve mobile usability
+- [ ] Game statistics/history
 
 # Local Development
 
