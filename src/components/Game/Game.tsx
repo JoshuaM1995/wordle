@@ -24,6 +24,7 @@ export const Game = ({ correctWord }: GameProps) => {
     lastSubmittedRow,
     isAnimating,
     shouldShowConfetti,
+    confettiOpacity,
   } = useGameState(correctWord);
   const [showCorrectAnswer, setShowCorrectAnswer] = useState(
     currentGuessIndex === ROWS_PER_GAME && !hasWonGame
@@ -53,7 +54,14 @@ export const Game = ({ correctWord }: GameProps) => {
   return (
     <>
       {shouldShowConfetti && width && height && (
-        <Confetti width={width} height={height} />
+        <div
+          style={{
+            opacity: confettiOpacity,
+            transition: "opacity 2s ease-out",
+          }}
+        >
+          <Confetti width={width} height={height} />
+        </div>
       )}
 
       <div id="game">

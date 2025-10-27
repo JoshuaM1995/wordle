@@ -10,7 +10,8 @@ export interface HandleKeyPressOptions {
   ctrlKey: boolean;
 }
 
-const CONFETTI_ANIMATION_DURATION = 5000;
+const CONFETTI_ANIMATION_DURATION = 10000;
+const FADE_OUT_DELAY = 5000;
 // Initialize the state with null values so we can check if a guess was made for the row yet
 const emptyGuesses = Array.from({ length: ROWS_PER_GAME }).map(() => null);
 
@@ -31,6 +32,7 @@ export const useGameState = (correctWord: string) => {
   const [isAnimating, setIsAnimating] = useState(false);
   const [shouldShowWinToast, setShouldShowWinToast] = useState(false);
   const [shouldShowConfetti, setShouldShowConfetti] = useState(false);
+  const [confettiOpacity, setConfettiOpacity] = useState(1);
 
   useEffect(() => {
     if (lastSubmittedRow >= 0) {
@@ -52,6 +54,11 @@ export const useGameState = (correctWord: string) => {
           });
           setShouldShowWinToast(false);
           setShouldShowConfetti(true);
+          setConfettiOpacity(1);
+
+          setTimeout(() => {
+            setConfettiOpacity(0);
+          }, FADE_OUT_DELAY);
 
           setTimeout(() => {
             setShouldShowConfetti(false);
@@ -155,5 +162,6 @@ export const useGameState = (correctWord: string) => {
     lastSubmittedRow,
     isAnimating,
     shouldShowConfetti,
+    confettiOpacity,
   };
 };
