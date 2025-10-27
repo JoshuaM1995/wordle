@@ -13,6 +13,7 @@ interface KeyboardProps {
   hasWonGame: boolean;
   handleKeyPress: (options: HandleKeyPressOptions) => void;
   isAnimating: boolean;
+  lastSubmittedRow: number;
 }
 
 const mapPhysicalKeyToVisual = (physicalKey: string) => {
@@ -36,6 +37,7 @@ export const Keyboard = ({
   hasWonGame,
   handleKeyPress,
   isAnimating,
+  lastSubmittedRow,
 }: KeyboardProps) => {
   const [pressedKey, setPressedKey] = useState<string | null>(null);
   const handleKeyPressRef = useRef(handleKeyPress);
@@ -76,9 +78,16 @@ export const Keyboard = ({
   // Memoize expensive calculations
   const keyStates = useMemo(() => {
     const correctWordLetters = correctWord.split("");
-    const filteredGuesses = hasWonGame
-      ? guesses
-      : guesses.filter((_, i) => i !== currentGuessIndex);
+    
+    let filteredGuesses;
+    if (hasWonGame) {
+      filteredGuesses = guesses;
+    } else if (isAnimating && lastSubmittedRow >= 0) {
+      // Exclude the row that's currently animating
+      filteredGuesses = guesses.filter((_, i) => i !== currentGuessIndex && i !== lastSubmittedRow);
+    } else {
+      filteredGuesses = guesses.filter((_, i) => i !== currentGuessIndex);
+    }
 
     const allGuessLetters = filteredGuesses
       .filter((guess) => !!guess)
@@ -120,7 +129,7 @@ export const Keyboard = ({
     });
 
     return states;
-  }, [correctWord, guesses, hasWonGame, currentGuessIndex]);
+  }, [correctWord, guesses, hasWonGame, currentGuessIndex, isAnimating, lastSubmittedRow]);
 
   const getKeyClassName = useCallback(
     (key: string) => {

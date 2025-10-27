@@ -113,6 +113,7 @@ export const Game = ({ correctWord }: GameProps) => {
           hasWonGame={hasWonGame}
           handleKeyPress={handleKeyPress}
           isAnimating={isAnimating}
+          lastSubmittedRow={lastSubmittedRow}
         />
 
         {currentGuessIndex === ROWS_PER_GAME && !hasWonGame && showCorrectAnswer && (
