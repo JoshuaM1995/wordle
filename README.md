@@ -8,7 +8,7 @@ Got bored so I wanted to recreate Wordle.
 - [x] Making `Keyboard` component functional.
 - [x] Adding animations.
 - [x] Dark mode.
-- [ ] Confetti animation when guessing correctly
+- [x] Confetti animation when guessing correctly
 - [ ] Improve mobile usability
 - [ ] Game statistics/history
 
