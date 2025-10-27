@@ -4,36 +4,33 @@ import { LOCAL_STORAGE_KEYS } from "../../constants";
 import { useEffect } from "react";
 
 export const DarkModeToggle = () => {
-  const [isDarkMode, setIsDarkMode] = useLocalStorage<boolean | null>(
+  const getInitialValue = () => {
+    try {
+      const stored = localStorage.getItem(LOCAL_STORAGE_KEYS.DARK_MODE);
+      if (stored !== null && stored !== "null") {
+        return JSON.parse(stored);
+      }
+    } catch (e) {
+      // Ignore parse errors
+    }
+    const prefersDark =
+      window.matchMedia &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches;
+    return prefersDark;
+  };
+
+  const [isDarkMode, setIsDarkMode] = useLocalStorage(
     LOCAL_STORAGE_KEYS.DARK_MODE,
-    null
+    getInitialValue()
   );
 
+  // Apply theme whenever isDarkMode changes
   useEffect(() => {
-    if (isDarkMode === null) {
-      const prefersDarkMode =
-        window.matchMedia &&
-        window.matchMedia("(prefers-color-scheme: dark)").matches;
-
-      toggleDarkMode(prefersDarkMode);
-
-      return;
-    }
-
     const html = document.documentElement;
     html.setAttribute("data-theme", isDarkMode ? "dark" : "light");
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [isDarkMode]);
 
   const toggleDarkMode = (shouldSetDarkMode: boolean) => {
-    const html = document.documentElement;
-
-    if (shouldSetDarkMode) {
-      html.setAttribute("data-theme", "dark");
-    } else {
-      html.setAttribute("data-theme", "light");
-    }
-
     setIsDarkMode(shouldSetDarkMode);
   };
 
