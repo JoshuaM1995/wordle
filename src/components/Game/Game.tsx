@@ -14,19 +14,30 @@ interface GameProps {
 }
 
 export const Game = ({ correctWord }: GameProps) => {
-  const { guesses, currentGuessIndex, hasWonGame, handleKeyPress, lastSubmittedRow, isAnimating } =
-    useGameState(correctWord);
+  const {
+    guesses,
+    currentGuessIndex,
+    hasWonGame,
+    handleKeyPress,
+    lastSubmittedRow,
+    isAnimating,
+  } = useGameState(correctWord);
   const [showCorrectAnswer, setShowCorrectAnswer] = useState(
     currentGuessIndex === ROWS_PER_GAME && !hasWonGame
   );
 
   useEffect(() => {
-    if (currentGuessIndex === ROWS_PER_GAME && !hasWonGame && lastSubmittedRow === ROWS_PER_GAME - 1) {
+    if (
+      currentGuessIndex === ROWS_PER_GAME &&
+      !hasWonGame &&
+      lastSubmittedRow === ROWS_PER_GAME - 1
+    ) {
       const FLIP_ANIMATION_DURATION = 800;
       const TILE_FLIP_DELAY = 250;
       const LAST_TILE_INDEX = TILES_PER_ROW - 1;
-      const totalAnimationTime = LAST_TILE_INDEX * TILE_FLIP_DELAY + FLIP_ANIMATION_DURATION;
-      
+      const totalAnimationTime =
+        LAST_TILE_INDEX * TILE_FLIP_DELAY + FLIP_ANIMATION_DURATION;
+
       const timer = setTimeout(() => {
         setShowCorrectAnswer(true);
       }, totalAnimationTime);
@@ -116,11 +127,13 @@ export const Game = ({ correctWord }: GameProps) => {
           lastSubmittedRow={lastSubmittedRow}
         />
 
-        {currentGuessIndex === ROWS_PER_GAME && !hasWonGame && showCorrectAnswer && (
-          <div id="correct-answer" className="fade-in">
-            Correct Answer: {correctWord?.toUpperCase()}
-          </div>
-        )}
+        {currentGuessIndex === ROWS_PER_GAME &&
+          !hasWonGame &&
+          showCorrectAnswer && (
+            <div id="correct-answer" className="fade-in">
+              Correct Answer: {correctWord?.toUpperCase()}
+            </div>
+          )}
       </div>
     </>
   );

@@ -28,6 +28,7 @@ export const useGameState = (correctWord: string) => {
   );
   const [lastSubmittedRow, setLastSubmittedRow] = useState<number>(-1);
   const [isAnimating, setIsAnimating] = useState(false);
+  const [shouldShowWinToast, setShouldShowWinToast] = useState(false);
 
   useEffect(() => {
     if (lastSubmittedRow >= 0) {
@@ -35,15 +36,26 @@ export const useGameState = (correctWord: string) => {
       const FLIP_ANIMATION_DURATION = 800;
       const TILE_FLIP_DELAY = 250;
       const LAST_TILE_INDEX = TILES_PER_ROW - 1;
-      const totalAnimationTime = LAST_TILE_INDEX * TILE_FLIP_DELAY + FLIP_ANIMATION_DURATION;
+      const totalAnimationTime =
+        LAST_TILE_INDEX * TILE_FLIP_DELAY + FLIP_ANIMATION_DURATION;
 
       const timer = setTimeout(() => {
         setIsAnimating(false);
+
+        if (shouldShowWinToast) {
+          toast("You guessed the correct word!", {
+            style: {
+              color: "white",
+              backgroundColor: "green",
+            },
+          });
+          setShouldShowWinToast(false);
+        }
       }, totalAnimationTime);
 
       return () => clearTimeout(timer);
     }
-  }, [lastSubmittedRow]);
+  }, [lastSubmittedRow, shouldShowWinToast]);
 
   const handleKeyPress = ({ key, metaKey, ctrlKey }: HandleKeyPressOptions) => {
     // Don't process keys when modifier keys are pressed (Cmd/Ctrl shortcuts)
@@ -102,12 +114,7 @@ export const useGameState = (correctWord: string) => {
       if (currentGuess === correctWord) {
         setHasWonGame(true);
         setLastSubmittedRow(currentGuessIndex);
-        toast("You guessed the correct word!", {
-          style: {
-            color: "white",
-            backgroundColor: "green",
-          },
-        });
+        setShouldShowWinToast(true);
         return;
       }
 
