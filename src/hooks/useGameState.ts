@@ -10,6 +10,8 @@ export interface HandleKeyPressOptions {
   ctrlKey: boolean;
 }
 
+const CONFETTI_ANIMATION_DURATION = 10000;
+const FADE_OUT_DELAY = 5000;
 // Initialize the state with null values so we can check if a guess was made for the row yet
 const emptyGuesses = Array.from({ length: ROWS_PER_GAME }).map(() => null);
 
@@ -29,10 +31,11 @@ export const useGameState = (correctWord: string) => {
   const [lastSubmittedRow, setLastSubmittedRow] = useState<number>(-1);
   const [isAnimating, setIsAnimating] = useState(false);
   const [shouldShowWinToast, setShouldShowWinToast] = useState(false);
+  const [shouldShowConfetti, setShouldShowConfetti] = useState(false);
+  const [confettiOpacity, setConfettiOpacity] = useState(1);
 
   useEffect(() => {
     if (lastSubmittedRow >= 0) {
-      setIsAnimating(true);
       const FLIP_ANIMATION_DURATION = 800;
       const TILE_FLIP_DELAY = 250;
       const LAST_TILE_INDEX = TILES_PER_ROW - 1;
@@ -50,6 +53,16 @@ export const useGameState = (correctWord: string) => {
             },
           });
           setShouldShowWinToast(false);
+          setShouldShowConfetti(true);
+          setConfettiOpacity(1);
+
+          setTimeout(() => {
+            setConfettiOpacity(0);
+          }, FADE_OUT_DELAY);
+
+          setTimeout(() => {
+            setShouldShowConfetti(false);
+          }, CONFETTI_ANIMATION_DURATION);
         }
       }, totalAnimationTime);
 
@@ -114,12 +127,14 @@ export const useGameState = (correctWord: string) => {
       if (currentGuess === correctWord) {
         setHasWonGame(true);
         setLastSubmittedRow(currentGuessIndex);
+        setIsAnimating(true);
         setShouldShowWinToast(true);
         return;
       }
 
       // The answer is incorrect, so go to the next row
       setLastSubmittedRow(currentGuessIndex);
+      setIsAnimating(true);
       setCurrentGuessIndex((prevIndex) => prevIndex + 1);
       return;
     }
@@ -146,5 +161,7 @@ export const useGameState = (correctWord: string) => {
     handleKeyPress,
     lastSubmittedRow,
     isAnimating,
+    shouldShowConfetti,
+    confettiOpacity,
   };
 };
