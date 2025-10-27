@@ -12,6 +12,7 @@ interface KeyboardProps {
   guesses: (string | null)[];
   hasWonGame: boolean;
   handleKeyPress: (options: HandleKeyPressOptions) => void;
+  isAnimating: boolean;
 }
 
 const mapPhysicalKeyToVisual = (physicalKey: string) => {
@@ -34,24 +35,33 @@ export const Keyboard = ({
   currentGuessIndex,
   hasWonGame,
   handleKeyPress,
+  isAnimating,
 }: KeyboardProps) => {
   const [pressedKey, setPressedKey] = useState<string | null>(null);
   const handleKeyPressRef = useRef(handleKeyPress);
+  const isAnimatingRef = useRef(isAnimating);
 
-  // Keep the ref up to date
+  // Keep the refs up to date
   useEffect(() => {
     handleKeyPressRef.current = handleKeyPress;
   }, [handleKeyPress]);
 
   useEffect(() => {
-    const handleKeyUp = (event: KeyboardEvent) => {
-      const visualKey = mapPhysicalKeyToVisual(event.key);
-      setPressedKey(visualKey);
+    isAnimatingRef.current = isAnimating;
+  }, [isAnimating]);
 
-      // Clear the pressed key after animation
-      setTimeout(() => {
-        setPressedKey(null);
-      }, 80);
+  useEffect(() => {
+    const handleKeyUp = (event: KeyboardEvent) => {
+      // Don't show pressed key animation if tiles are animating
+      if (!isAnimatingRef.current) {
+        const visualKey = mapPhysicalKeyToVisual(event.key);
+        setPressedKey(visualKey);
+
+        // Clear the pressed key after animation
+        setTimeout(() => {
+          setPressedKey(null);
+        }, 80);
+      }
 
       handleKeyPressRef.current(event);
     };
@@ -119,8 +129,8 @@ export const Keyboard = ({
 
       let className = "key";
 
-      // Add pressed key animation class first
-      if (pressedKey === key.toLowerCase()) {
+      // Add pressed key animation class only if not animating
+      if (pressedKey === key.toLowerCase() && !isAnimating) {
         className += " key-pressed";
       }
 
@@ -139,11 +149,11 @@ export const Keyboard = ({
 
       return className;
     },
-    [keyStates, pressedKey]
+    [keyStates, pressedKey, isAnimating]
   );
 
   return (
-    <div id="keyboard">
+    <div id="keyboard" className={isAnimating ? "disabled" : ""}>
       <div className="keyboard-row">
         {firstRowKeys.map((key) => (
           <div

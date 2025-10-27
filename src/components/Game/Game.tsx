@@ -14,7 +14,7 @@ interface GameProps {
 }
 
 export const Game = ({ correctWord }: GameProps) => {
-  const { guesses, currentGuessIndex, hasWonGame, handleKeyPress, lastSubmittedRow } =
+  const { guesses, currentGuessIndex, hasWonGame, handleKeyPress, lastSubmittedRow, isAnimating } =
     useGameState(correctWord);
   const [showCorrectAnswer, setShowCorrectAnswer] = useState(
     currentGuessIndex === ROWS_PER_GAME && !hasWonGame
@@ -112,6 +112,7 @@ export const Game = ({ correctWord }: GameProps) => {
           guesses={guesses}
           hasWonGame={hasWonGame}
           handleKeyPress={handleKeyPress}
+          isAnimating={isAnimating}
         />
 
         {currentGuessIndex === ROWS_PER_GAME && !hasWonGame && showCorrectAnswer && (

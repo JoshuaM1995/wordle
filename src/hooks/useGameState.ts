@@ -2,7 +2,7 @@ import { useLocalStorage } from "@uidotdev/usehooks";
 import { toast } from "react-hot-toast";
 import { LOCAL_STORAGE_KEYS, ROWS_PER_GAME, TILES_PER_ROW } from "../constants";
 import validWords from "../data/valid-words.json";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export interface HandleKeyPressOptions {
   key: string;
@@ -27,10 +27,32 @@ export const useGameState = (correctWord: string) => {
     false
   );
   const [lastSubmittedRow, setLastSubmittedRow] = useState<number>(-1);
+  const [isAnimating, setIsAnimating] = useState(false);
+
+  useEffect(() => {
+    if (lastSubmittedRow >= 0) {
+      setIsAnimating(true);
+      const FLIP_ANIMATION_DURATION = 800;
+      const TILE_FLIP_DELAY = 250;
+      const LAST_TILE_INDEX = TILES_PER_ROW - 1;
+      const totalAnimationTime = LAST_TILE_INDEX * TILE_FLIP_DELAY + FLIP_ANIMATION_DURATION;
+
+      const timer = setTimeout(() => {
+        setIsAnimating(false);
+      }, totalAnimationTime);
+
+      return () => clearTimeout(timer);
+    }
+  }, [lastSubmittedRow]);
 
   const handleKeyPress = ({ key, metaKey, ctrlKey }: HandleKeyPressOptions) => {
     // Don't process keys when modifier keys are pressed (Cmd/Ctrl shortcuts)
     if (metaKey || ctrlKey) {
+      return;
+    }
+
+    // Block input while animations are running
+    if (isAnimating) {
       return;
     }
 
@@ -116,5 +138,6 @@ export const useGameState = (correctWord: string) => {
     hasWonGame,
     handleKeyPress,
     lastSubmittedRow,
+    isAnimating,
   };
 };
