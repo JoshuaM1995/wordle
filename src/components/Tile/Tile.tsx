@@ -26,18 +26,18 @@ export const Tile = ({
 
   useEffect(() => {
     const prevLetter = prevLetterRef.current;
-    console.log(`Tile ${tileIndex}: prevLetter="${prevLetter}", currentLetter="${letter}", shouldFlip: ${shouldFlip}`);
-    
-    if (!prevLetter && letter && !shouldFlip) {
-      console.log(`Tile ${tileIndex}: triggering pop animation (transition from empty to "${letter}")`);
-      setShouldPopIn(false);
+
+    if (!letter) {
+      requestAnimationFrame(() => setShouldPopIn(false));
+    } else if (!prevLetter && letter && !shouldFlip) {
       requestAnimationFrame(() => {
-        setShouldPopIn(true);
+        setShouldPopIn(false);
+        requestAnimationFrame(() => {
+          setShouldPopIn(true);
+        });
       });
-      prevLetterRef.current = letter;
-      return;
     }
-    
+
     prevLetterRef.current = letter || "";
   }, [letter, shouldFlip, tileIndex]);
 
