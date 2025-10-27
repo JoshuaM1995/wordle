@@ -13,6 +13,9 @@
   --button-text: #ffffff;
   --correct-answer-background: #000000;
   --correct-answer-text: #ffffff;
+  --dark-mode-toggle-background: #5e61e6;
+  --dark-mode-toggle-sun: #ffa41b;
+  --dark-mode-toggle-moon: #fff;
 }
 
 [data-theme="dark"] {
@@ -29,6 +32,9 @@
   --button-text: #ffffff;
   --correct-answer-background: #ffffff;
   --correct-answer-text: #000000;
+  --dark-mode-toggle-background: #5e61e6;
+  --dark-mode-toggle-sun: #ffa41b;
+  --dark-mode-toggle-moon: #fff;
 }
 
 // Smooth transitions for theme changes
