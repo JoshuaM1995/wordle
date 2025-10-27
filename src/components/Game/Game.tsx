@@ -51,7 +51,7 @@ export const Game = ({ correctWord }: GameProps) => {
                 guessForTile === "" ||
                 (i === currentGuessIndex && !hasWonGame)
               ) {
-                return <Tile letter={guessForTile} />;
+                return <Tile key={i} letter={guessForTile} />;
               }
 
               const isLetterIncorrect = !correctWord.includes(guessForTile);
@@ -61,6 +61,7 @@ export const Game = ({ correctWord }: GameProps) => {
 
               return (
                 <Tile
+                  key={i}
                   letter={guessForTile}
                   isLetterCorrect={isLetterCorrect}
                   isLetterInCorrectPosition={isLetterInCorrectPosition}

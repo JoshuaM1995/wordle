@@ -86,8 +86,7 @@ export const Keyboard = ({
 
     [...firstRowKeys, ...secondRowKeys, ...thirdRowKeys].forEach((key) => {
       const hasBeenGuessed =
-        (filteredGuesses?.find((guess) => guess?.includes(key))?.length ?? 0) >
-        0;
+        filteredGuesses?.some((guess) => guess?.includes(key)) ?? false;
       const isKeyInCorrectPosition = correctWord.includes(key);
       const isKeyIncorrectGuess = !correctWord.includes(key);
 
