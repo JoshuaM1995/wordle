@@ -1,5 +1,3 @@
-@use "sass:color";
-@use "../../styles/colors" as *;
 @use "../../styles/breakpoints" as *;
 
 #keyboard {
@@ -40,7 +38,8 @@
     }
 
     .key {
-      background: #d4d6da;
+      background: var(--key);
+      color: var(--text);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -51,7 +50,8 @@
       font-weight: bold;
       font-size: 16px;
       cursor: pointer;
-      transition: scale 0.05s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: scale 0.05s cubic-bezier(0.4, 0, 0.2, 1),
+        background-color 0.3s ease, color 0.3s ease;
       flex-shrink: 0;
 
       @include sm {
@@ -77,22 +77,19 @@
 
       &.key-pressed {
         scale: 0.85;
-        background: color.scale($key, $lightness: -10%) !important;
+        background: var(--key-pressed) !important;
         -webkit-tap-highlight-color: transparent !important;
 
         &.correct {
-          background: color.scale($correct, $lightness: -10%) !important;
+          background: var(--correct) !important;
         }
 
         &.correct-position {
-          background: color.scale(
-            $correct-position,
-            $lightness: -10%
-          ) !important;
+          background: var(--correct-position) !important;
         }
 
         &.incorrect {
-          background: color.scale($incorrect, $lightness: -10%) !important;
+          background: var(--incorrect) !important;
         }
       }
 
@@ -116,19 +113,19 @@
       &.correct,
       &.correct-position,
       &.incorrect {
-        color: #fff;
+        color: var(--button-text);
       }
 
       &.correct {
-        background: $correct;
+        background: var(--correct);
       }
 
       &.correct-position {
-        background: $correct-position;
+        background: var(--correct-position);
       }
 
       &.incorrect {
-        background: $incorrect;
+        background: var(--incorrect);
       }
     }
   }

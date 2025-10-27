@@ -45,8 +45,8 @@ export const useGameState = (correctWord: string) => {
         if (shouldShowWinToast) {
           toast("You guessed the correct word!", {
             style: {
-              color: "white",
-              backgroundColor: "green",
+              color: "var(--toast-success-text)",
+              backgroundColor: "var(--toast-success-background)",
             },
           });
           setShouldShowWinToast(false);

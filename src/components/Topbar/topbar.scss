@@ -1,0 +1,8 @@
+#topbar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  height: 60px;
+  padding: 0 36px;
+  border-bottom: 1px solid var(--topbar-border);
+}

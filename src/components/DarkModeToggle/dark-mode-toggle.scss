@@ -1,0 +1,62 @@
+@use "sass:color";
+
+// https://codepen.io/havardob/pen/MWawKVy
+#dark-mode-toggle {
+  *,
+  *:after,
+  *:before {
+    box-sizing: border-box;
+  }
+
+  label {
+    position: relative;
+    display: block;
+    width: 60px;
+    height: 36px;
+    border-radius: 100px;
+    background-color: var(--dark-mode-toggle-background);
+    overflow: hidden;
+    cursor: pointer;
+
+    &:before,
+    &:after {
+      display: block;
+      position: absolute;
+      content: "";
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      top: 6px;
+      left: 6px;
+      transition: 0.5s ease;
+    }
+
+    &:before {
+      background-color: var(--dark-mode-toggle-sun);
+    }
+
+    &:after {
+      background-color: var(--dark-mode-toggle-background);
+      width: 20px;
+      height: 20px;
+      top: 8px;
+      left: -18px;
+      transform: scale(0.00001);
+    }
+  }
+
+  input[type="checkbox"] {
+    display: none;
+
+    &:checked + label {
+      &:before {
+        background-color: var(--dark-mode-toggle-moon);
+        transform: translateX(24px);
+      }
+
+      &:after {
+        transform: translateX(42px) scale(1);
+      }
+    }
+  }
+}
