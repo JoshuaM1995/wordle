@@ -41,7 +41,7 @@ export const Game = ({ correctWord }: GameProps) => {
         </button>
 
         {Array.from({ length: ROWS_PER_GAME }).map((_, i) => (
-          <div className="tile-row">
+          <div key={i} className="tile-row">
             {Array.from({ length: TILES_PER_ROW }).map((__, j) => {
               const guessForTile = guesses[i]?.[j] ?? "";
               const correctWordLetters = correctWord.split("");
