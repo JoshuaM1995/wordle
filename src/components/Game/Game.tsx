@@ -1,3 +1,6 @@
+import { useWindowSize } from "@uidotdev/usehooks";
+import { useEffect, useState } from "react";
+import Confetti from "react-confetti";
 import {
   LOCAL_STORAGE_KEYS,
   ROWS_PER_GAME,
@@ -7,7 +10,6 @@ import { useGameState } from "../../hooks/useGameState";
 import { Keyboard } from "../Keyboard";
 import { Tile } from "../Tile";
 import "./game.scss";
-import { useState, useEffect } from "react";
 
 interface GameProps {
   correctWord: string;
@@ -21,10 +23,12 @@ export const Game = ({ correctWord }: GameProps) => {
     handleKeyPress,
     lastSubmittedRow,
     isAnimating,
+    shouldShowConfetti,
   } = useGameState(correctWord);
   const [showCorrectAnswer, setShowCorrectAnswer] = useState(
     currentGuessIndex === ROWS_PER_GAME && !hasWonGame
   );
+  const { width, height } = useWindowSize();
 
   useEffect(() => {
     if (
@@ -48,6 +52,10 @@ export const Game = ({ correctWord }: GameProps) => {
 
   return (
     <>
+      {shouldShowConfetti && width && height && (
+        <Confetti width={width} height={height} />
+      )}
+
       <div id="game">
         <h1 className="title">Wordle Practice</h1>
 
