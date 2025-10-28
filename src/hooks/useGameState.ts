@@ -30,7 +30,7 @@ export const useGameState = (correctWord: string) => {
   );
   const [lastSubmittedRow, setLastSubmittedRow] = useState<number>(-1);
   const [isAnimating, setIsAnimating] = useState(false);
-  const [shouldShowWinToast, setShouldShowWinToast] = useState(false);
+  const [shouldShowWinAnimations, setShouldShowWinAnimations] = useState(false);
   const [shouldShowConfetti, setShouldShowConfetti] = useState(false);
   const [confettiOpacity, setConfettiOpacity] = useState(1);
 
@@ -45,14 +45,8 @@ export const useGameState = (correctWord: string) => {
       const timer = setTimeout(() => {
         setIsAnimating(false);
 
-        if (shouldShowWinToast) {
-          toast("You guessed the correct word!", {
-            style: {
-              color: "var(--toast-success-text)",
-              backgroundColor: "var(--toast-success-background)",
-            },
-          });
-          setShouldShowWinToast(false);
+        if (shouldShowWinAnimations) {
+          setShouldShowWinAnimations(false);
           setShouldShowConfetti(true);
           setConfettiOpacity(1);
 
@@ -68,7 +62,7 @@ export const useGameState = (correctWord: string) => {
 
       return () => clearTimeout(timer);
     }
-  }, [lastSubmittedRow, shouldShowWinToast]);
+  }, [lastSubmittedRow, shouldShowWinAnimations]);
 
   const handleKeyPress = ({ key, metaKey, ctrlKey }: HandleKeyPressOptions) => {
     // Don't process keys when modifier keys are pressed (Cmd/Ctrl shortcuts)
@@ -128,7 +122,7 @@ export const useGameState = (correctWord: string) => {
         setHasWonGame(true);
         setLastSubmittedRow(currentGuessIndex);
         setIsAnimating(true);
-        setShouldShowWinToast(true);
+        setShouldShowWinAnimations(true);
         return;
       }
 
