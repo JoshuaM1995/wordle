@@ -36,7 +36,7 @@
   @include sm {
     justify-content: center;
     padding: 20px 10px;
-    min-height: 100vh;
+    min-height: calc(100vh - 60px); // Account for topbar height
     height: auto; // Allow natural height on larger screens
     overflow: visible; // Allow scrolling on larger screens
   }
@@ -48,6 +48,10 @@
   .tile-row {
     display: flex;
     gap: 2px;
+
+    @include max-xs {
+      gap: 1px;
+    }
 
     @include sm {
       gap: 5px;
