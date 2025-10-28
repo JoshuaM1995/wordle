@@ -4,12 +4,25 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 5px;
-  margin-top: 10px;
+  gap: 4px;
+  margin-top: 8px;
   width: 100%;
   max-width: 500px;
-  padding: 0 10px;
+  padding: 0 8px;
   box-sizing: border-box;
+
+  @include max-xs {
+    gap: 3px;
+    margin-top: 6px;
+    padding: 0 6px;
+    max-width: none; // Remove max-width constraint on mobile
+  }
+
+  @include sm {
+    gap: 5px;
+    margin-top: 10px;
+    padding: 0 10px;
+  }
 
   &.disabled {
     pointer-events: none;
@@ -29,9 +42,13 @@
   .keyboard-row {
     display: flex;
     flex-direction: row;
-    gap: 3px;
+    gap: 2px;
     justify-content: center;
     width: 100%;
+
+    @include max-xs {
+      gap: 1px;
+    }
 
     @include sm {
       gap: 5px;
@@ -53,6 +70,12 @@
       transition: scale 0.05s cubic-bezier(0.4, 0, 0.2, 1),
         background-color 0.3s ease, color 0.3s ease;
       flex-shrink: 0;
+
+      @include max-xs {
+        width: 30px;
+        height: 36px;
+        font-size: 14px;
+      }
 
       @include sm {
         width: 40px;
@@ -97,6 +120,10 @@
       &.enter {
         width: 50px;
 
+        @include max-xs {
+          width: 45px;
+        }
+
         @include sm {
           width: 70px;
         }
@@ -104,6 +131,10 @@
 
       &.enter {
         font-size: 10px;
+
+        @include max-xs {
+          font-size: 9px;
+        }
 
         @include sm {
           font-size: 12px;
