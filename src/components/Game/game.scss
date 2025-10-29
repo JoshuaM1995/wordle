@@ -20,7 +20,7 @@
   min-height: 100dvh; // Use dynamic viewport height for mobile
   height: 100vh;
   height: 100dvh; // Use dynamic viewport height for mobile
-  gap: 5px;
+  gap: 6px;
   padding: 10px;
   box-sizing: border-box;
   background: var(--background);
@@ -30,7 +30,6 @@
 
   @include max-xs {
     padding: 8px;
-    gap: 3px;
   }
 
   @include sm {
@@ -47,15 +46,7 @@
 
   .tile-row {
     display: flex;
-    gap: 2px;
-
-    @include max-xs {
-      gap: 1px;
-    }
-
-    @include sm {
-      gap: 5px;
-    }
+    gap: 6px;
   }
 
   #correct-answer {
