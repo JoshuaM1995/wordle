@@ -67,6 +67,14 @@ export const Game = ({ correctWord }: GameProps) => {
       <div id="game">
         <h1 className="title">Wordle Practice</h1>
 
+        {currentGuessIndex === ROWS_PER_GAME &&
+          !hasWonGame &&
+          showCorrectAnswer && (
+            <div id="correct-answer" className="fade-in">
+              Correct Answer: {correctWord?.toUpperCase()}
+            </div>
+          )}
+
         {Array.from({ length: ROWS_PER_GAME }).map((_, i) => (
           <div key={i} className="tile-row">
             {Array.from({ length: TILES_PER_ROW }).map((__, j) => {
@@ -123,14 +131,6 @@ export const Game = ({ correctWord }: GameProps) => {
           isAnimating={isAnimating}
           lastSubmittedRow={lastSubmittedRow}
         />
-
-        {currentGuessIndex === ROWS_PER_GAME &&
-          !hasWonGame &&
-          showCorrectAnswer && (
-            <div id="correct-answer" className="fade-in">
-              Correct Answer: {correctWord?.toUpperCase()}
-            </div>
-          )}
       </div>
     </>
   );
