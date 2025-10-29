@@ -17,47 +17,45 @@
   align-items: center;
   justify-content: flex-start;
   min-height: 100vh;
-  gap: 5px;
-  padding: 20px 10px;
+  min-height: 100dvh; // Use dynamic viewport height for mobile
+  height: 100vh;
+  height: 100dvh; // Use dynamic viewport height for mobile
+  gap: 6px;
+  padding: 10px;
   box-sizing: border-box;
   background: var(--background);
   color: var(--text);
   transition: background-color 0.3s ease, color 0.3s ease;
+  overflow: hidden; // Prevent scrolling within the game container
+
+  @include max-xs {
+    padding: 8px;
+  }
 
   @include sm {
     justify-content: center;
-    padding: 0;
+    padding: 20px 10px;
+    min-height: calc(100vh - 60px); // Account for topbar height
+    height: auto; // Allow natural height on larger screens
+    overflow: visible; // Allow scrolling on larger screens
   }
 
   .title {
-    margin-bottom: 6px;
+    margin: 6px 0 2px 0;
   }
 
   .tile-row {
     display: flex;
-    gap: 3px;
-
-    @include sm {
-      gap: 5px;
-    }
-  }
-
-  #new-wordle {
-    color: var(--button-text);
-    background: var(--correct);
-    border: none;
-    margin-bottom: 14px;
-    padding: 12px 14px;
-    border-radius: 8px;
-    transition: background-color 0.3s ease, color 0.3s ease;
+    gap: 6px;
   }
 
   #correct-answer {
     color: var(--correct-answer-text);
     background: var(--correct-answer-background);
     border-radius: 10px;
-    margin-top: 10px;
-    padding: 12px 14px;
+    margin-top: 8px;
+    margin-bottom: 14px;
+    padding: 10px 12px;
     transition: background-color 0.3s ease, color 0.3s ease;
 
     &.fade-in {

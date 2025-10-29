@@ -1,4 +1,5 @@
 @use "sass:color";
+@use "../../styles/breakpoints" as *;
 
 // https://codepen.io/havardob/pen/MWawKVy
 #dark-mode-toggle {
@@ -18,6 +19,16 @@
     overflow: hidden;
     cursor: pointer;
 
+    @include max-xs {
+      width: 45px;
+      height: 28px;
+    }
+
+    @include max-sm {
+      width: 50px;
+      height: 30px;
+    }
+
     &:before,
     &:after {
       display: block;
@@ -29,6 +40,20 @@
       top: 6px;
       left: 6px;
       transition: 0.5s ease;
+
+      @include max-xs {
+        width: 18px;
+        height: 18px;
+        top: 5px;
+        left: 5px;
+      }
+
+      @include max-sm {
+        width: 20px;
+        height: 20px;
+        top: 5px;
+        left: 5px;
+      }
     }
 
     &:before {
@@ -42,6 +67,20 @@
       top: 8px;
       left: -18px;
       transform: scale(0.00001);
+
+      @include max-xs {
+        width: 16px;
+        height: 16px;
+        top: 6px;
+        left: -14px;
+      }
+
+      @include max-sm {
+        width: 18px;
+        height: 18px;
+        top: 6px;
+        left: -16px;
+      }
     }
   }
 
@@ -52,10 +91,26 @@
       &:before {
         background-color: var(--dark-mode-toggle-moon);
         transform: translateX(24px);
+
+        @include max-xs {
+          transform: translateX(17px);
+        }
+
+        @include max-sm {
+          transform: translateX(20px);
+        }
       }
 
       &:after {
         transform: translateX(42px) scale(1);
+
+        @include max-xs {
+          transform: translateX(31px) scale(1);
+        }
+
+        @include max-sm {
+          transform: translateX(36px) scale(1);
+        }
       }
     }
   }

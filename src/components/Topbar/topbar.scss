@@ -1,8 +1,65 @@
+@use "../../styles/breakpoints" as *;
+
 #topbar {
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: space-between;
   height: 60px;
   padding: 0 36px;
   border-bottom: 1px solid var(--topbar-border);
+
+  @include max-xs {
+    height: 40px;
+    padding: 0 16px;
+  }
+
+  @include max-sm {
+    height: 45px;
+    padding: 0 20px;
+  }
+
+  #new-wordle {
+    color: var(--button-text);
+    background: var(--correct);
+    border: none;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+
+    @include max-xs {
+      padding: 6px 10px;
+      font-size: 12px;
+      gap: 4px;
+
+      svg {
+        font-size: 12px;
+      }
+    }
+
+    @include max-sm {
+      padding: 7px 11px;
+      font-size: 13px;
+      gap: 5px;
+
+      svg {
+        font-size: 13px;
+      }
+    }
+
+    &:hover {
+      background: var(--correct-hover, var(--correct));
+      opacity: 0.9;
+    }
+
+    &:active {
+      transform: scale(0.95);
+    }
+  }
 }

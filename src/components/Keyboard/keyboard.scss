@@ -4,12 +4,31 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 5px;
-  margin-top: 10px;
+  gap: 6px;
+  margin: 8px auto 0 auto;
   width: 100%;
   max-width: 500px;
-  padding: 0 10px;
+  padding: 0 24px;
   box-sizing: border-box;
+
+  @include max-xs {
+    gap: 3px;
+    margin: 4px auto 0 auto;
+    padding: 0 20px;
+    max-width: none; // Remove max-width constraint on mobile
+  }
+
+  @include max-sm {
+    gap: 4px;
+    margin: 6px auto 0 auto;
+    padding: 0 22px;
+  }
+
+  @include sm {
+    gap: 5px;
+    margin: 10px auto 0 auto;
+    padding: 0 10px;
+  }
 
   &.disabled {
     pointer-events: none;
@@ -29,9 +48,18 @@
   .keyboard-row {
     display: flex;
     flex-direction: row;
-    gap: 3px;
+    gap: 4px;
     justify-content: center;
-    width: 100%;
+    width: auto;
+    max-width: 100%;
+
+    @include max-xs {
+      gap: 3px;
+    }
+
+    @include max-sm {
+      gap: 4px;
+    }
 
     @include sm {
       gap: 5px;
@@ -44,7 +72,7 @@
       align-items: center;
       justify-content: center;
       width: 32px;
-      height: 40px;
+      height: 44px;
       border-radius: 4px;
       text-transform: uppercase;
       font-weight: bold;
@@ -54,9 +82,21 @@
         background-color 0.3s ease, color 0.3s ease;
       flex-shrink: 0;
 
+      @include max-xs {
+        width: 30px;
+        height: 40px;
+        font-size: 14px;
+      }
+
+      @include max-sm {
+        width: 34px;
+        height: 44px;
+        font-size: 16px;
+      }
+
       @include sm {
         width: 40px;
-        height: 50px;
+        height: 56px;
         font-size: 20px;
       }
 
@@ -97,6 +137,14 @@
       &.enter {
         width: 50px;
 
+        @include max-xs {
+          width: 45px;
+        }
+
+        @include max-sm {
+          width: 50px;
+        }
+
         @include sm {
           width: 70px;
         }
@@ -104,6 +152,14 @@
 
       &.enter {
         font-size: 10px;
+
+        @include max-xs {
+          font-size: 11px;
+        }
+
+        @include max-sm {
+          font-size: 12px;
+        }
 
         @include sm {
           font-size: 12px;
