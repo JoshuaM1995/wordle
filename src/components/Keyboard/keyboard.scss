@@ -54,11 +54,11 @@
     max-width: 100%;
 
     @include max-xs {
-      gap: 2px;
+      gap: 3px;
     }
 
     @include max-sm {
-      gap: 3px;
+      gap: 4px;
     }
 
     @include sm {
