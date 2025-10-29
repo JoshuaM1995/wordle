@@ -58,21 +58,6 @@
     }
   }
 
-  #new-wordle {
-    color: var(--button-text);
-    background: var(--correct);
-    border: none;
-    margin-bottom: 8px;
-    padding: 10px 12px;
-    border-radius: 8px;
-    transition: background-color 0.3s ease, color 0.3s ease;
-
-    @include sm {
-      margin-bottom: 14px;
-      padding: 12px 14px;
-    }
-  }
-
   #correct-answer {
     color: var(--correct-answer-text);
     background: var(--correct-answer-background);

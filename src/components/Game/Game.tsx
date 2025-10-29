@@ -67,25 +67,6 @@ export const Game = ({ correctWord }: GameProps) => {
       <div id="game">
         <h1 className="title">Wordle Practice</h1>
 
-        <button
-          id="new-wordle"
-          onClick={() => {
-            const hasConfirmed = window.confirm(
-              "Are you sure you want to create a new Wordle? All your progress will be lost."
-            );
-
-            if (hasConfirmed) {
-              localStorage.removeItem(LOCAL_STORAGE_KEYS.GUESSES);
-              localStorage.removeItem(LOCAL_STORAGE_KEYS.CURRENT_GUESS_INDEX);
-              localStorage.removeItem(LOCAL_STORAGE_KEYS.CORRECT_WORD);
-              localStorage.removeItem(LOCAL_STORAGE_KEYS.HAS_WON_GAME);
-              window.location.reload();
-            }
-          }}
-        >
-          New Wordle
-        </button>
-
         {Array.from({ length: ROWS_PER_GAME }).map((_, i) => (
           <div key={i} className="tile-row">
             {Array.from({ length: TILES_PER_ROW }).map((__, j) => {
