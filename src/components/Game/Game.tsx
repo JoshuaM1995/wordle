@@ -67,13 +67,14 @@ export const Game = ({ correctWord }: GameProps) => {
       <div id="game">
         <h1 className="title">Wordle Practice</h1>
 
-        {currentGuessIndex === ROWS_PER_GAME &&
+        {(currentGuessIndex === ROWS_PER_GAME &&
           !hasWonGame &&
-          showCorrectAnswer && (
-            <div id="correct-answer" className="fade-in">
-              Correct Answer: {correctWord?.toUpperCase()}
-            </div>
-          )}
+          showCorrectAnswer) ||
+        import.meta.env.DEV ? (
+          <div id="correct-answer" className="fade-in">
+            Correct Answer: {correctWord?.toUpperCase()}
+          </div>
+        ) : null}
 
         {Array.from({ length: ROWS_PER_GAME }).map((_, i) => (
           <div key={i} className="tile-row">
