@@ -22,10 +22,3 @@ body {
   color: var(--text);
   overflow-x: hidden; // Prevent horizontal scrolling
 }
-
-@include max-sm {
-  html,
-  body {
-    overflow-y: hidden; // Prevent vertical scrolling on mobile
-  }
-}
