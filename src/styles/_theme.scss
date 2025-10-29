@@ -4,6 +4,7 @@
   --dark-mode-toggle-background: #6366f1;
   --dark-mode-toggle-sun: #ffa726;
   --dark-mode-toggle-moon: #fff;
+  --correct-answer-background: #6366f1;
 }
 
 [data-theme="light"] {
@@ -17,8 +18,7 @@
   --topbar-border: #bec5d9;
   --background: #fef3f2;
   --text: #283647;
-  --correct-answer-background: #1f2937;
-  --correct-answer-text: #fef3f2;
+  --correct-answer-text: #ffffff;
   --toast-background: #1f2937;
   --toast-text: #ffffff;
   --toast-success-background: #10b981;
@@ -30,17 +30,16 @@
   --tile-border-color-filled: #6b7280;
   --key: #6b7280;
   --key-pressed: #4b5563;
-  --correct: #34d399;
+  --correct: #2fba87;
   --correct-position: #fbbf24;
   --incorrect: #374151;
   --topbar-border: #4b5463;
   --background: #0f172a;
   --text: #e3e6e8;
-  --correct-answer-background: #6366f1;
   --correct-answer-text: #ffffff;
   --toast-background: #30435e;
   --toast-text: #f1f5f9;
-  --toast-success-background: #34d399;
+  --toast-success-background: #2fba87;
   --toast-success-text: #0f172a;
 }
 
