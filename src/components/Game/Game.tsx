@@ -1,11 +1,7 @@
 import { useWindowSize } from "@uidotdev/usehooks";
 import { useEffect, useState } from "react";
 import Confetti from "react-confetti";
-import {
-  LOCAL_STORAGE_KEYS,
-  ROWS_PER_GAME,
-  TILES_PER_ROW,
-} from "../../constants";
+import { ROWS_PER_GAME, TILES_PER_ROW } from "../../constants";
 import { useGameState } from "../../hooks/useGameState";
 import { Keyboard } from "../Keyboard";
 import { Tile } from "../Tile";
